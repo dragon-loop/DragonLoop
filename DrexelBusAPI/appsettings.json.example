@@ -5,7 +5,5 @@
     }
   },
   "AllowedHosts": "*",
-  "AppSettings": {
-    "PgConnectionString": "Your Postgres Connection String Here"
-  }  
+  "PgConnectionString": "Your Postgres Connection String Here"
 }

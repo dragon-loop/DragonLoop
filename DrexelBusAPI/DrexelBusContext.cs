@@ -7,10 +7,10 @@ namespace DrexelBusAPI
     {
         public DbSet<Bus> Buses { get; set; }
 
-        public DrexelBusContext(DbContextOptions options) : base(options) { }
+        public DbSet<Route> Route { get; set; }
 
-        public DbSet<DrexelBusAPI.Models.Route> Route { get; set; }
+        public DbSet<Stop> Stop { get; set; }
 
-        public DbSet<DrexelBusAPI.Models.Stop> Stop { get; set; }
+        public DrexelBusContext(DbContextOptions options) : base(options) { }        
     }
 }
