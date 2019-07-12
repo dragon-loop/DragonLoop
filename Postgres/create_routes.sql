@@ -1,10 +1,10 @@
--- Table: drexelbus.routes
+-- Table: public."Routes"
 
--- DROP TABLE drexelbus.routes;
+-- DROP TABLE public."Routes";
 
-CREATE TABLE drexelbus.routes
+CREATE TABLE public."Routes"
 (
-    route_id integer NOT NULL DEFAULT nextval('drexelbus.route_route_id_seq'::regclass),
+    route_id integer NOT NULL DEFAULT nextval('route_route_id_seq'::regclass),
     name text COLLATE pg_catalog."default" NOT NULL,
     initial_stop integer NOT NULL,
     final_stop integer NOT NULL,
@@ -16,5 +16,5 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE drexelbus.routes
+ALTER TABLE public."Routes"
     OWNER to postgres;

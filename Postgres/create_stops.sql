@@ -1,20 +1,19 @@
--- Table: drexelbus.route
+-- Table: public."Stops"
 
--- DROP TABLE drexelbus.route;
+-- DROP TABLE public."Stops";
 
-CREATE TABLE drexelbus.route
+CREATE TABLE public."Stops"
 (
-    route_id integer NOT NULL DEFAULT nextval('drexelbus.route_route_id_seq'::regclass),
+    stop_id integer NOT NULL DEFAULT nextval('stop_stop_id_seq'::regclass),
+    x_coordinate numeric NOT NULL,
+    y_coordinate numeric NOT NULL,
     name text COLLATE pg_catalog."default" NOT NULL,
-    initial_stop integer NOT NULL,
-    final_stop integer NOT NULL,
-    stops integer[] NOT NULL,
-    CONSTRAINT route_pkey PRIMARY KEY (route_id)
+    CONSTRAINT stop_pkey PRIMARY KEY (stop_id)
 )
 WITH (
     OIDS = FALSE
 )
 TABLESPACE pg_default;
 
-ALTER TABLE drexelbus.route
+ALTER TABLE public."Stops"
     OWNER to postgres;
