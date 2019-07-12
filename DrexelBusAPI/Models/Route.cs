@@ -1,17 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DrexelBusAPI.Models
 {
     public class Route
     {
-        public int Id { get; set; }
+        [Key]
+        public int route_id { get; set; }
 
-        public string Name { get; set; }
+        public string name { get; set; }
 
-        public int Initial_stop { get; set; }
+        public int initial_stop { get; set; }
 
-        public int Final_stop { get; set; }
+        public int final_stop { get; set; }
 
-        public IEnumerable<int> Stops { get; set; }
+        public int[] stops { get; set; }
     }
 }

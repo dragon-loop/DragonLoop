@@ -1,13 +1,16 @@
-﻿namespace DrexelBusAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DrexelBusAPI.Models
 {
     public class Bus
     {
-        public int Id { get; set; }
+        [Key]
+        public int bus_id { get; set; }
 
-        public decimal X_coordinate { get; set; }
+        public decimal x_coordinate { get; set; }
 
-        public decimal Y_coordinate { get; set; }
+        public decimal y_coordinate { get; set; }
 
-        public int Route_id { get; set; }
+        public int route_id { get; set; }
     }
 }

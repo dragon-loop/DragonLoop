@@ -1,7 +1,12 @@
-﻿using DrexelBusAPI.Managers;
-using DrexelBusAPI.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using DrexelBusAPI;
+using DrexelBusAPI.Models;
 
 namespace DrexelBusAPI.Controllers
 {
@@ -9,20 +14,93 @@ namespace DrexelBusAPI.Controllers
     [ApiController]
     public class StopController : ControllerBase
     {
-        private readonly IOptions<AppSettings> _config;
-        private static StopManager _stopManager;
+        private readonly DrexelBusContext _context;
 
-        public StopController(IOptions<AppSettings> config)
+        public StopController(DrexelBusContext context)
         {
-            _config = config;
-            _stopManager = new StopManager(_config);
+            _context = context;
+        }
+
+        // GET: api/Stop
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Stop>>> GetStop()
+        {
+            return await _context.Stop.ToListAsync();
         }
 
         // GET: api/Stop/5
         [HttpGet("{id}")]
-        public Stop Get(int id)
+        public async Task<ActionResult<Stop>> GetStop(int id)
         {
-            return _stopManager.GetStop(id);
+            var stop = await _context.Stop.FindAsync(id);
+
+            if (stop == null)
+            {
+                return NotFound();
+            }
+
+            return stop;
+        }
+
+        // PUT: api/Stop/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutStop(int id, Stop stop)
+        {
+            if (id != stop.stop_id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(stop).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!StopExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/Stop
+        [HttpPost]
+        public async Task<ActionResult<Stop>> PostStop(Stop stop)
+        {
+            _context.Stop.Add(stop);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetStop", new { id = stop.stop_id }, stop);
+        }
+
+        // DELETE: api/Stop/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Stop>> DeleteStop(int id)
+        {
+            var stop = await _context.Stop.FindAsync(id);
+            if (stop == null)
+            {
+                return NotFound();
+            }
+
+            _context.Stop.Remove(stop);
+            await _context.SaveChangesAsync();
+
+            return stop;
+        }
+
+        private bool StopExists(int id)
+        {
+            return _context.Stop.Any(e => e.stop_id == id);
         }
     }
 }

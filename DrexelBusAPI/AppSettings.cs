@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace DrexelBusAPI
+﻿namespace DrexelBusAPI
 {
     public class AppSettings
     {
