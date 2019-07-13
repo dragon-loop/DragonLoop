@@ -1,6 +1,21 @@
-INSERT INTO drexelbus.stops (x_coordinate, y_coordinate, name) VALUES
-(39.966909, -75.192269, 'Mantua Av & 34th St'),
-(39.965284, -75.191909, '34th St & Wallace St'),
-(39.965658, -75.188387, 'Mantua Av & Wallace St'),
-(39.962857, -75.191459, 'Spring Garden St & 34th St'),
-(39.963840, -75.194403, 'Haverford Av & 36th St')
+INSERT INTO public."Stops" (x_coordinate, y_coordinate, name, route_id) VALUES
+(39.955619, -75.189475,'33rd and Market Streets',1),
+(39.956458, -75.164471,'15th & Race Streets',1),
+(39.955415, -75.171137,'19th & Arch Streets',1),
+(39.954014, -75.176679,'22nd & Market Streets',1),
+(39.955619, -75.189475,'33rd & Market Streets',2),
+(39.962607, -75.194290,'36th & Spring Garden Streets',2),
+(39.958828, -75.206270,'42nd & Powelton Avenue',2),
+(39.962607, -75.194290,'36th & Spring Garden Streets',2),
+(39.956458, -75.164472,'15th and Race Streets',3),
+(40.019915, -75.181201,'Queen Lane',3);
+UPDATE public."Stops" SET next_stop_id = 2 WHERE stop_id = 1;
+UPDATE public."Stops" SET next_stop_id = 3 WHERE stop_id = 2;
+UPDATE public."Stops" SET next_stop_id = 4 WHERE stop_id = 3;
+UPDATE public."Stops" SET next_stop_id = 1 WHERE stop_id = 4;
+UPDATE public."Stops" SET next_stop_id = 6 WHERE stop_id = 5;
+UPDATE public."Stops" SET next_stop_id = 7 WHERE stop_id = 6;
+UPDATE public."Stops" SET next_stop_id = 8 WHERE stop_id = 7;
+UPDATE public."Stops" SET next_stop_id = 5 WHERE stop_id = 8;
+UPDATE public."Stops" SET next_stop_id = 10 WHERE stop_id = 9;
+UPDATE public."Stops" SET next_stop_id = 9 WHERE stop_id = 10;

@@ -25,14 +25,14 @@ namespace DrexelBusAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Stop>>> GetStop()
         {
-            return await _context.Stop.ToListAsync();
+            return await _context.Stops.ToListAsync();
         }
 
         // GET: api/Stop/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Stop>> GetStop(int id)
         {
-            var stop = await _context.Stop.FindAsync(id);
+            var stop = await _context.Stops.FindAsync(id);
 
             if (stop == null)
             {
@@ -76,7 +76,7 @@ namespace DrexelBusAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Stop>> PostStop(Stop stop)
         {
-            _context.Stop.Add(stop);
+            _context.Stops.Add(stop);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetStop", new { id = stop.stop_id }, stop);
@@ -86,13 +86,13 @@ namespace DrexelBusAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Stop>> DeleteStop(int id)
         {
-            var stop = await _context.Stop.FindAsync(id);
+            var stop = await _context.Stops.FindAsync(id);
             if (stop == null)
             {
                 return NotFound();
             }
 
-            _context.Stop.Remove(stop);
+            _context.Stops.Remove(stop);
             await _context.SaveChangesAsync();
 
             return stop;
@@ -100,7 +100,7 @@ namespace DrexelBusAPI.Controllers
 
         private bool StopExists(int id)
         {
-            return _context.Stop.Any(e => e.stop_id == id);
+            return _context.Stops.Any(e => e.stop_id == id);
         }
     }
 }

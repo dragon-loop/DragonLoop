@@ -1,3 +1,4 @@
-INSERT INTO drexelbus.routes (name, initial_stop, final_stop, stops) VALUES
-('North Route', 3, 2, '{3, 1, 2}'),
-('South Route', 5, 4, '{5, 2, 4}')
+INSERT INTO public."Routes" (name) VALUES
+('DRAGON ROUTE (CENTER CITY LOOP)'),
+('POWELTON/SPRING GARDEN ROUTE'),
+('QUEEN LANE ROUTE (EAST FALLS LOOP)')

@@ -9,11 +9,5 @@ namespace DrexelBusAPI.Models
         public int route_id { get; set; }
 
         public string name { get; set; }
-
-        public int initial_stop { get; set; }
-
-        public int final_stop { get; set; }
-
-        public int[] stops { get; set; }
     }
 }

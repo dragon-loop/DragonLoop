@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DrexelBusAPI.Models;
+using DrexelBusAPI.Managers;
 
 namespace DrexelBusAPI.Controllers
 {
@@ -12,10 +13,12 @@ namespace DrexelBusAPI.Controllers
     public class BusController : ControllerBase
     {
         private readonly DrexelBusContext _context;
+        private static BusManager _busManager;
 
         public BusController(DrexelBusContext context)
         {
             _context = context;
+            _busManager = new BusManager(_context);
         }
 
         // GET: api/Bus
@@ -37,6 +40,20 @@ namespace DrexelBusAPI.Controllers
             }
 
             return bus;
+        }
+
+        // GET: api/Bus/5/ClosestStop
+        [HttpGet("{id}/ClosestStop")]
+        public async Task<ActionResult<Stop>> GetClosestStop(int id)
+        {
+            var bus = await _context.Buses.FindAsync(id);
+
+            if (bus == null)
+            {
+                return NotFound();
+            }
+
+            return _busManager.GetClosestStop(bus);
         }
 
         // PUT: api/Bus/5

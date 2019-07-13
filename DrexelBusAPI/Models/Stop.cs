@@ -12,5 +12,9 @@ namespace DrexelBusAPI.Models
         public decimal y_coordinate { get; set; }
 
         public string name { get; set; }
+
+        public int route_id { get; set; }
+
+        public int? next_stop_id { get; set; }
     }
 }

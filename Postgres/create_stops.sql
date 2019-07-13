@@ -8,7 +8,17 @@ CREATE TABLE public."Stops"
     x_coordinate numeric NOT NULL,
     y_coordinate numeric NOT NULL,
     name text COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT stop_pkey PRIMARY KEY (stop_id)
+    route_id integer NOT NULL,
+    next_stop_id integer,
+    CONSTRAINT stop_pkey PRIMARY KEY (stop_id),
+    CONSTRAINT next_stop_id_fkey FOREIGN KEY (next_stop_id)
+        REFERENCES public."Stops" (stop_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+    CONSTRAINT route_id_fkey FOREIGN KEY (route_id)
+        REFERENCES public."Routes" (route_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
 )
 WITH (
     OIDS = FALSE

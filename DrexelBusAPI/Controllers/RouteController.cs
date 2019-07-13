@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DrexelBusAPI;
 using DrexelBusAPI.Models;
+using DrexelBusAPI.Managers;
 
 namespace DrexelBusAPI.Controllers
 {
@@ -25,14 +26,14 @@ namespace DrexelBusAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Route>>> GetRoute()
         {
-            return await _context.Route.ToListAsync();
+            return await _context.Routes.ToListAsync();
         }
 
         // GET: api/Route/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Route>> GetRoute(int id)
         {
-            var route = await _context.Route.FindAsync(id);
+            var route = await _context.Routes.FindAsync(id);
 
             if (route == null)
             {
@@ -40,6 +41,20 @@ namespace DrexelBusAPI.Controllers
             }
 
             return route;
+        }
+
+        // GET: api/Route/5/Stops
+        [HttpGet("{id}/Stops")]
+        public async Task<ActionResult<IEnumerable<Stop>>> GetRouteStops(int id)
+        {
+            var route = await _context.Routes.FindAsync(id);
+
+            if (route == null)
+            {
+                return NotFound();
+            }
+
+            return _context.Stops.Where(stop => stop.route_id == route.route_id).ToList();
         }
 
         // PUT: api/Route/5
@@ -76,7 +91,7 @@ namespace DrexelBusAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Route>> PostRoute(Route route)
         {
-            _context.Route.Add(route);
+            _context.Routes.Add(route);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetRoute", new { id = route.route_id }, route);
@@ -86,13 +101,13 @@ namespace DrexelBusAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Route>> DeleteRoute(int id)
         {
-            var route = await _context.Route.FindAsync(id);
+            var route = await _context.Routes.FindAsync(id);
             if (route == null)
             {
                 return NotFound();
             }
 
-            _context.Route.Remove(route);
+            _context.Routes.Remove(route);
             await _context.SaveChangesAsync();
 
             return route;
@@ -100,7 +115,7 @@ namespace DrexelBusAPI.Controllers
 
         private bool RouteExists(int id)
         {
-            return _context.Route.Any(e => e.route_id == id);
+            return _context.Routes.Any(e => e.route_id == id);
         }
     }
 }
