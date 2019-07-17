@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DrexelBusAPI;
 using DrexelBusAPI.Models;
-using DrexelBusAPI.Managers;
 
 namespace DrexelBusAPI.Controllers
 {
@@ -54,14 +50,14 @@ namespace DrexelBusAPI.Controllers
                 return NotFound();
             }
 
-            return _context.Stops.Where(stop => stop.route_id == route.route_id).ToList();
+            return route.Stops.ToList();
         }
 
         // PUT: api/Route/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRoute(int id, Route route)
         {
-            if (id != route.route_id)
+            if (id != route.RouteId)
             {
                 return BadRequest();
             }
@@ -94,7 +90,7 @@ namespace DrexelBusAPI.Controllers
             _context.Routes.Add(route);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRoute", new { id = route.route_id }, route);
+            return CreatedAtAction("GetRoute", new { id = route.RouteId }, route);
         }
 
         // DELETE: api/Route/5
@@ -115,7 +111,7 @@ namespace DrexelBusAPI.Controllers
 
         private bool RouteExists(int id)
         {
-            return _context.Routes.Any(e => e.route_id == id);
+            return _context.Routes.Any(e => e.RouteId == id);
         }
     }
 }

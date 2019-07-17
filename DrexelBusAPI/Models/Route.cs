@@ -1,13 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DrexelBusAPI.Models
 {
-    public class Route
+    [Table("routes")]
+    public partial class Route
     {
-        [Key]
-        public int route_id { get; set; }
+        public Route()
+        {
+            Buses = new HashSet<Bus>();
+            Stops = new HashSet<Stop>();
+        }
 
-        public string name { get; set; }
+        [Column("route_id")]
+        public int RouteId { get; set; }
+
+        [Required]
+        [Column("name")]
+        public string Name { get; set; }
+
+        [InverseProperty("Route")]
+        [JsonIgnore]
+        public virtual ICollection<Bus> Buses { get; set; }
+
+        [InverseProperty("Route")]
+        [JsonIgnore]
+        public virtual ICollection<Stop> Stops { get; set; }
     }
 }

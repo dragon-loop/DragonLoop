@@ -13,12 +13,11 @@ namespace DrexelBusAPI.Controllers
     public class BusController : ControllerBase
     {
         private readonly DrexelBusContext _context;
-        private static BusManager _busManager;
+        private static BusManager _busManager = new BusManager();
 
         public BusController(DrexelBusContext context)
         {
             _context = context;
-            _busManager = new BusManager(_context);
         }
 
         // GET: api/Bus
@@ -60,7 +59,7 @@ namespace DrexelBusAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBus(int id, Bus bus)
         {
-            if (id != bus.bus_id)
+            if (id != bus.BusId)
             {
                 return BadRequest();
             }
@@ -93,7 +92,7 @@ namespace DrexelBusAPI.Controllers
             _context.Buses.Add(bus);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBus", new { id = bus.bus_id }, bus);
+            return CreatedAtAction("GetBus", new { id = bus.BusId }, bus);
         }
 
         // DELETE: api/Bus/5
@@ -114,7 +113,7 @@ namespace DrexelBusAPI.Controllers
 
         private bool BusExists(int id)
         {
-            return _context.Buses.Any(e => e.bus_id == id);
+            return _context.Buses.Any(e => e.BusId == id);
         }
     }
 }

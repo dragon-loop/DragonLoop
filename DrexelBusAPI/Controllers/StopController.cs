@@ -46,7 +46,7 @@ namespace DrexelBusAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStop(int id, Stop stop)
         {
-            if (id != stop.stop_id)
+            if (id != stop.StopId)
             {
                 return BadRequest();
             }
@@ -79,7 +79,7 @@ namespace DrexelBusAPI.Controllers
             _context.Stops.Add(stop);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetStop", new { id = stop.stop_id }, stop);
+            return CreatedAtAction("GetStop", new { id = stop.StopId }, stop);
         }
 
         // DELETE: api/Stop/5
@@ -100,7 +100,7 @@ namespace DrexelBusAPI.Controllers
 
         private bool StopExists(int id)
         {
-            return _context.Stops.Any(e => e.stop_id == id);
+            return _context.Stops.Any(e => e.StopId == id);
         }
     }
 }

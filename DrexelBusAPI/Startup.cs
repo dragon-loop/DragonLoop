@@ -19,9 +19,10 @@ namespace DrexelBusAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest)
+                             .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddEntityFrameworkNpgsql()
-                    .AddDbContext<DrexelBusContext>(context => context.UseNpgsql(Configuration.GetSection("PgConnectionString").Value))
+                    .AddDbContext<DrexelBusContext>(context => context.UseLazyLoadingProxies().UseNpgsql(Configuration.GetSection("PgConnectionString").Value))
                     .BuildServiceProvider();
         }
 

@@ -1,16 +1,26 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DrexelBusAPI.Models
 {
-    public class Bus
+    [Table("buses")]
+    public partial class Bus
     {
-        [Key]
-        public int bus_id { get; set; }
+        [Column("bus_id")]
+        public int BusId { get; set; }
 
-        public decimal x_coordinate { get; set; }
+        [Column("x_coordinate", TypeName = "numeric")]
+        public decimal XCoordinate { get; set; }
 
-        public decimal y_coordinate { get; set; }
+        [Column("y_coordinate", TypeName = "numeric")]
+        public decimal YCoordinate { get; set; }
 
-        public int route_id { get; set; }
+        [Column("route_id")]
+        public int RouteId { get; set; }
+
+        [ForeignKey("RouteId")]
+        [InverseProperty("Buses")]
+        [JsonIgnore]
+        public virtual Route Route { get; set; }
     }
 }
