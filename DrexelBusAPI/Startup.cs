@@ -24,6 +24,14 @@ namespace DrexelBusAPI
             services.AddEntityFrameworkNpgsql()
                     .AddDbContext<DrexelBusContext>(context => context.UseLazyLoadingProxies().UseNpgsql(Configuration.GetSection("PgConnectionString").Value))
                     .BuildServiceProvider();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info() {
+                    Title = "Drexel Bus API",
+                    Version = "v1"
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +45,13 @@ namespace DrexelBusAPI
             {
                 app.UseHsts();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Drexel Bus API V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseHttpsRedirection();
             app.UseMvc();
