@@ -4,7 +4,6 @@
     "DrexelBusAPI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/bus/1",
       "applicationUrl": "https://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
