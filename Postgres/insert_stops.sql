@@ -1,4 +1,4 @@
-INSERT INTO public."Stops" (x_coordinate, y_coordinate, name, route_id) VALUES
+INSERT INTO public.stops (x_coordinate, y_coordinate, name, route_id) VALUES
 (39.955619, -75.189475,'33rd and Market Streets',1),
 (39.956458, -75.164471,'15th & Race Streets',1),
 (39.955415, -75.171137,'19th & Arch Streets',1),

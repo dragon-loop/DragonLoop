@@ -1,8 +1,8 @@
--- Table: public."Buses"
+-- Table: public.buses
 
--- DROP TABLE public."Buses";
+-- DROP TABLE public.buses;
 
-CREATE TABLE public."Buses"
+CREATE TABLE public.buses
 (
     bus_id integer NOT NULL DEFAULT nextval('bus_bus_id_seq'::regclass),
     x_coordinate numeric NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE public."Buses"
     route_id integer NOT NULL,
     CONSTRAINT bus_pkey PRIMARY KEY (bus_id),
     CONSTRAINT route_id_fkey FOREIGN KEY (route_id)
-        REFERENCES public."Routes" (route_id) MATCH SIMPLE
+        REFERENCES public.routes (route_id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE RESTRICT
 )
@@ -19,5 +19,5 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public."Buses"
+ALTER TABLE public.buses
     OWNER to postgres;

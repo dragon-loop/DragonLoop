@@ -1,8 +1,8 @@
--- Table: public."Stops"
+-- Table: public.stops
 
--- DROP TABLE public."Stops";
+-- DROP TABLE public.stops;
 
-CREATE TABLE public."Stops"
+CREATE TABLE public.stops
 (
     stop_id integer NOT NULL DEFAULT nextval('stop_stop_id_seq'::regclass),
     x_coordinate numeric NOT NULL,
@@ -11,12 +11,14 @@ CREATE TABLE public."Stops"
     route_id integer NOT NULL,
     next_stop_id integer,
     CONSTRAINT stop_pkey PRIMARY KEY (stop_id),
+    CONSTRAINT next_stop_id_key UNIQUE (next_stop_id)
+,
     CONSTRAINT next_stop_id_fkey FOREIGN KEY (next_stop_id)
-        REFERENCES public."Stops" (stop_id) MATCH SIMPLE
+        REFERENCES public.stops (stop_id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE SET NULL,
     CONSTRAINT route_id_fkey FOREIGN KEY (route_id)
-        REFERENCES public."Routes" (route_id) MATCH SIMPLE
+        REFERENCES public.routes (route_id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE RESTRICT
 )
@@ -25,5 +27,5 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public."Stops"
+ALTER TABLE public.stops
     OWNER to postgres;

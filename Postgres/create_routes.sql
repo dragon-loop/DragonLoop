@@ -1,8 +1,8 @@
--- Table: public."Routes"
+-- Table: public.routes
 
--- DROP TABLE public."Routes";
+-- DROP TABLE public.routes;
 
-CREATE TABLE public."Routes"
+CREATE TABLE public.routes
 (
     route_id integer NOT NULL DEFAULT nextval('route_route_id_seq'::regclass),
     name text COLLATE pg_catalog."default" NOT NULL,
@@ -13,5 +13,5 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public."Routes"
+ALTER TABLE public.routes
     OWNER to postgres;
