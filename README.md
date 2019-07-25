@@ -1,4 +1,4 @@
-# Drexel Bus API
+# Drexel Bus
 
 ## Setup
 1. Download [Postgres](https://www.postgresql.org/)
