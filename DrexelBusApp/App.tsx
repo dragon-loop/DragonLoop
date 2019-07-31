@@ -1,16 +1,6 @@
-import React from 'react';
-import {
-  View,
-  Text
-} from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import AppNavigator from './components/AppNavigator';
 
-
-const App = () => {
-  return (
-    <View>
-      <Text>This is the home screen.</Text>
-    </View>
-  );
-};
+const App = createAppContainer(AppNavigator);
 
 export default App;
