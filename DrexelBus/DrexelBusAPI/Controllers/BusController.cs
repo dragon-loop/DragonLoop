@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DrexelBusAPI.Models;
 using DrexelBusAPI.Managers;
+using DrexelBusModels;
 
 namespace DrexelBusAPI.Controllers
 {

@@ -1,4 +1,4 @@
-﻿using DrexelBusAPI.Models;
+﻿using DrexelBusModels;
 
 namespace DrexelBusAPI.Managers
 {
