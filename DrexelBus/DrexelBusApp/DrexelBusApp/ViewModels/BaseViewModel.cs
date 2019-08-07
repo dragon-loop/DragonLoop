@@ -7,12 +7,15 @@ using Xamarin.Forms;
 
 using DrexelBusApp.Models;
 using DrexelBusApp.Services;
+using DrexelBusModels;
 
 namespace DrexelBusApp.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>() ?? new MockDataStore();
+        public IDataService<Bus> BusService => DependencyService.Get<IDataService<Bus>>() ?? new BusService();
+        public IDataService<Route> RouteService => DependencyService.Get<IDataService<Route>>() ?? new RouteService();
+        public IDataService<Stop> StopService => DependencyService.Get<IDataService<Stop>>() ?? new StopService();
 
         bool isBusy = false;
         public bool IsBusy

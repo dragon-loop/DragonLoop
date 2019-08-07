@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using System.Net;
 
 namespace DrexelBusAPI
 {
@@ -12,6 +13,10 @@ namespace DrexelBusAPI
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseKestrel(options =>
+                {
+                    options.Listen(IPAddress.Loopback, 5001); //Use HTTP
+                })
                 .UseStartup<Startup>();
     }
 }
