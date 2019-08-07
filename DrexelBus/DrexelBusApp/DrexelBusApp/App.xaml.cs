@@ -13,7 +13,9 @@ namespace DrexelBusApp
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
+            DependencyService.Register<BusService>();
+            DependencyService.Register<RouteService>();
+            DependencyService.Register<StopService>();
             MainPage = new MainPage();
         }
 
