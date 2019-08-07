@@ -1,4 +1,4 @@
-﻿using DrexelBusAPI.Models;
+﻿using DrexelBusModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace DrexelBusAPI
@@ -15,10 +15,25 @@ namespace DrexelBusAPI
         {
             modelBuilder.Entity<Bus>(entity =>
             {
+                entity.ToTable("buses");
+
                 entity.HasKey(e => e.BusId)
                     .HasName("bus_pkey");
 
-                entity.Property(e => e.BusId).HasDefaultValueSql("nextval('bus_bus_id_seq'::regclass)");
+                entity.Property(e => e.BusId)
+                    .HasColumnName("bus_id")
+                    .HasDefaultValueSql("nextval('bus_bus_id_seq'::regclass)");
+
+                entity.Property(e => e.XCoordinate)
+                    .HasColumnName("x_coordinate")
+                    .HasColumnType("numeric");
+
+                entity.Property(e => e.YCoordinate)
+                    .HasColumnName("y_coordinate")
+                    .HasColumnType("numeric");
+
+                entity.Property(e => e.RouteId)
+                    .HasColumnName("route_id");
 
                 entity.HasOne(d => d.Route)
                     .WithMany(p => p.Buses)
@@ -29,14 +44,30 @@ namespace DrexelBusAPI
 
             modelBuilder.Entity<Route>(entity =>
             {
+                entity.ToTable("routes");
+
                 entity.HasKey(e => e.RouteId)
                     .HasName("route_pkey");
 
-                entity.Property(e => e.RouteId).HasDefaultValueSql("nextval('route_route_id_seq'::regclass)");
+                entity.Property(e => e.RouteId)
+                    .HasColumnName("route_id")
+                    .HasDefaultValueSql("nextval('route_route_id_seq'::regclass)");
+
+                entity.Property(e => e.Name)
+                    .HasColumnName("name")
+                    .IsRequired();
+
+                entity.HasMany(d => d.Buses)
+                    .WithOne(p => p.Route);
+
+                entity.HasMany(d => d.Stops)
+                    .WithOne(p => p.Route);
             });
 
             modelBuilder.Entity<Stop>(entity =>
             {
+                entity.ToTable("stops");
+
                 entity.HasKey(e => e.StopId)
                     .HasName("stop_pkey");
 
@@ -44,7 +75,27 @@ namespace DrexelBusAPI
                     .HasName("next_stop_id_key")
                     .IsUnique();
 
-                entity.Property(e => e.StopId).HasDefaultValueSql("nextval('stop_stop_id_seq'::regclass)");
+                entity.Property(e => e.StopId)
+                    .HasColumnName("stop_id")
+                    .HasDefaultValueSql("nextval('stop_stop_id_seq'::regclass)");
+
+                entity.Property(e => e.XCoordinate)
+                    .HasColumnName("x_coordinate")
+                    .HasColumnType("numeric");
+
+                entity.Property(e => e.YCoordinate)
+                    .HasColumnName("y_coordinate")
+                    .HasColumnType("numeric");
+
+                entity.Property(e => e.Name)
+                    .HasColumnName("name")
+                    .IsRequired();
+
+                entity.Property(e => e.RouteId)
+                    .HasColumnName("route_id");
+
+                entity.Property(e => e.NextStopId)
+                    .HasColumnName("next_stop_id");
 
                 entity.HasOne(d => d.NextStop)
                     .WithOne(p => p.PreviousStop)
@@ -57,6 +108,9 @@ namespace DrexelBusAPI
                     .HasForeignKey(d => d.RouteId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("route_id_fkey");
+
+                entity.HasOne(d => d.PreviousStop)
+                    .WithOne(p => p.NextStop);
             });
 
             modelBuilder.HasSequence<int>("bus_bus_id_seq");

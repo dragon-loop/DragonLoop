@@ -18,4 +18,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
+  <Import Project="..\DrexelBusModels\DrexelBusModels.projitems" Label="Shared" />
+
 </Project>
