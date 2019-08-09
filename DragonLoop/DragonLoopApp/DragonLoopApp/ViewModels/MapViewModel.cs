@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 
 using DragonLoopModels;
+using Xamarin.Forms.Maps;
 
 namespace DragonLoopApp.ViewModels
 {
@@ -15,11 +16,19 @@ namespace DragonLoopApp.ViewModels
 
         public Command LoadRoutesCommand { get; set; }
 
+        public Map Map { get; set; }
+
         public MapViewModel()
         {
             Title = "Map";
             Routes = new ObservableCollection<Route>();
             LoadRoutesCommand = new Command(async () => await ExecuteLoadRoutesCommand());
+            Map = new Map(
+                MapSpan.FromCenterAndRadius(
+                    new Position(39.955615, -75.189490), Distance.FromMiles(0.5)))
+                        {
+                            IsShowingUser = true
+                        };
         }
 
         async Task ExecuteLoadRoutesCommand()
