@@ -8,6 +8,11 @@
              Title="{Binding Title}">
     <ContentPage.Content>
         <StackLayout>
+            <ContentView x:Name="Map"
+                         Content="{Binding Map}"                         
+                         HeightRequest="960"
+                         WidthRequest="960"
+                         VerticalOptions="FillAndExpand"></ContentView>
             <ListView x:Name="RoutesListView"
                 ItemsSource="{Binding Routes}"
                 VerticalOptions="FillAndExpand"
