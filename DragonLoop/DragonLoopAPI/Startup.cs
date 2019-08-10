@@ -46,6 +46,8 @@ namespace DragonLoopAPI
                 app.UseHsts();
             }
 
+            app.UseCors(policy => policy.WithOrigins("http://localhost:65331"));
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

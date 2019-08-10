@@ -26,7 +26,7 @@ namespace DragonLoopApp.Views
         {
             base.OnAppearing();
 
-            if (viewModel.Routes.Count == 0)
+            if (viewModel.Routes == null || !viewModel.Routes.Any())
                 viewModel.LoadRoutesCommand.Execute(null);
         }
     }

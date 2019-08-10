@@ -13,10 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonLoopAPI", "DragonLoop
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DragonLoopModels", "DragonLoopModels\DragonLoopModels.shproj", "{4CBDD305-A843-4D96-9D5A-49F8D14BB64B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonLoopWeb", "DragonLoopWeb\DragonLoopWeb.csproj", "{B94C623C-2054-4CA1-A3F5-D98CFBE90ED3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonLoopWeb", "DragonLoopWeb\DragonLoopWeb.csproj", "{B94C623C-2054-4CA1-A3F5-D98CFBE90ED3}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DragonLoopViewModels", "DragonLoopViewModels\DragonLoopViewModels.shproj", "{2A4ABD3F-0884-4033-BD95-3C291AC1C0FC}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		DragonLoopViewModels\DragonLoopViewModels.projitems*{2a4abd3f-0884-4033-bd95-3c291ac1c0fc}*SharedItemsImports = 13
 		DragonLoopModels\DragonLoopModels.projitems*{4cbdd305-a843-4d96-9d5a-49f8d14bb64b}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

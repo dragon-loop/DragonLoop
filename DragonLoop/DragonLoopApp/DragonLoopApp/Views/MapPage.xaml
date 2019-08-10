@@ -14,7 +14,7 @@
                          WidthRequest="960"
                          VerticalOptions="FillAndExpand"></ContentView>
             <ListView x:Name="RoutesListView"
-                ItemsSource="{Binding Routes}"
+                ItemsSource="{Binding RoutesCollection}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
                 RefreshCommand="{Binding LoadRoutesCommand}"

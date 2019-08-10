@@ -4,24 +4,28 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Maps;
 
 using DragonLoopModels;
-using Xamarin.Forms.Maps;
 
 namespace DragonLoopApp.ViewModels
 {
-    public class MapViewModel : BaseViewModel
+    public class MapViewModel : DragonLoopViewModels.ViewModels.MapViewModel
     {
-        public ObservableCollection<Route> Routes { get; set; }
+        public string Title { get; set; }
+
+        private bool IsBusy { get; set; }
+
+        public ObservableCollection<Route> RoutesCollection { get; set; }
 
         public Command LoadRoutesCommand { get; set; }
 
         public Map Map { get; set; }
 
-        public MapViewModel()
+        public MapViewModel() : base(Settings.UrlBase)
         {
             Title = "Map";
-            Routes = new ObservableCollection<Route>();
+            RoutesCollection = new ObservableCollection<Route>();
             LoadRoutesCommand = new Command(async () => await ExecuteLoadRoutesCommand());
             Map = new Map(
                 MapSpan.FromCenterAndRadius(
@@ -31,7 +35,7 @@ namespace DragonLoopApp.ViewModels
                         };
         }
 
-        async Task ExecuteLoadRoutesCommand()
+        private async Task ExecuteLoadRoutesCommand()
         {
             if (IsBusy)
                 return;
@@ -40,11 +44,11 @@ namespace DragonLoopApp.ViewModels
 
             try
             {
-                Routes.Clear();
-                var routes = await RouteService.GetItemsAsync();
-                foreach (var route in routes)
+                RoutesCollection.Clear();
+                await LoadRoutes();
+                foreach (var route in Routes)
                 {
-                    Routes.Add(route);
+                    RoutesCollection.Add(route);
                 }
             }
             catch (Exception ex)
