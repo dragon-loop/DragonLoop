@@ -42,4 +42,6 @@
   </ItemGroup>
 
   <Import Project="..\..\DragonLoopModels\DragonLoopModels.projitems" Label="Shared" />
+
+  <Import Project="..\..\DragonLoopViewModels\DragonLoopViewModels.projitems" Label="Shared" />
 </Project>

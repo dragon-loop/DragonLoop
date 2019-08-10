@@ -3,20 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-using Xamarin.Forms;
-
-using DragonLoopApp.Models;
-using DragonLoopApp.Services;
-using DragonLoopModels;
-
 namespace DragonLoopApp.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataService<Bus> BusService => DependencyService.Get<IDataService<Bus>>() ?? new BusService();
-        public IDataService<Route> RouteService => DependencyService.Get<IDataService<Route>>() ?? new RouteService();
-        public IDataService<Stop> StopService => DependencyService.Get<IDataService<Stop>>() ?? new StopService();
-
         bool isBusy = false;
         public bool IsBusy
         {

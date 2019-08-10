@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace DragonLoopApp.Services
+namespace DragonLoopViewModels.Services
 {
     public class RequestProvider
     {

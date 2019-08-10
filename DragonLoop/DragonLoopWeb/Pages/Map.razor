@@ -1,0 +1,35 @@
+﻿@page "/"
+@using DragonLoopViewModels.ViewModels
+
+<h1>Maps View</h1>
+
+@if (mapViewModel.Routes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>RouteId</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var route in mapViewModel.Routes)
+            {
+                <tr>
+                    <td>@route.RouteId</td>
+                    <td>@route.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private MapViewModel mapViewModel = new MapViewModel(Settings.UrlBase);
+
+    protected override async Task OnInitAsync() => await mapViewModel.LoadRoutes();
+}
