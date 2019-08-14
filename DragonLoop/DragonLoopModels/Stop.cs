@@ -1,9 +1,15 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace DragonLoopModels
 {
     public class Stop
     {
+        public Stop()
+        {
+            Schedules = new HashSet<Schedule>();
+        }
+
         public int StopId { get; set; }
 
         public decimal XCoordinate { get; set; }
@@ -24,5 +30,8 @@ namespace DragonLoopModels
 
         [JsonIgnore]
         public virtual Stop PreviousStop { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<Schedule> Schedules { get; set; }
     }
 }
