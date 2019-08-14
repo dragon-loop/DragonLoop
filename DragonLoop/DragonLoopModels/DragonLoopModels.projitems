@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Bus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Route.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Schedule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Stop.cs" />
   </ItemGroup>
 </Project>

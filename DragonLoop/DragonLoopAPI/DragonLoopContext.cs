@@ -10,6 +10,7 @@ namespace DragonLoopAPI
         public virtual DbSet<Bus> Buses { get; set; }
         public virtual DbSet<Route> Routes { get; set; }
         public virtual DbSet<Stop> Stops { get; set; }
+        public virtual DbSet<Schedule> Schedules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +36,9 @@ namespace DragonLoopAPI
                 entity.Property(e => e.RouteId)
                     .HasColumnName("route_id");
 
+                entity.Property(e => e.TripId)
+                    .HasColumnName("trip_id");
+
                 entity.HasOne(d => d.Route)
                     .WithMany(p => p.Buses)
                     .HasForeignKey(d => d.RouteId)
@@ -56,12 +60,6 @@ namespace DragonLoopAPI
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
                     .IsRequired();
-
-                entity.HasMany(d => d.Buses)
-                    .WithOne(p => p.Route);
-
-                entity.HasMany(d => d.Stops)
-                    .WithOne(p => p.Route);
             });
 
             modelBuilder.Entity<Stop>(entity =>
@@ -108,9 +106,39 @@ namespace DragonLoopAPI
                     .HasForeignKey(d => d.RouteId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("route_id_fkey");
+            });
 
-                entity.HasOne(d => d.PreviousStop)
-                    .WithOne(p => p.NextStop);
+            modelBuilder.Entity<Schedule>(entity =>
+            {
+                entity.ToTable("schedules");
+
+                entity.HasKey(e => new { e.RouteId, e.TripId, e.StopId })
+                    .HasName("schedules_pkey");                
+
+                entity.Property(e => e.RouteId)
+                    .HasColumnName("route_id");
+
+                entity.Property(e => e.TripId)
+                    .HasColumnName("trip_id");
+
+                entity.Property(e => e.StopId)
+                    .HasColumnName("stop_id");
+
+                entity.Property(e => e.ExpectedTime)
+                    .HasColumnName("expected_time")
+                    .HasColumnType("time without time zone");
+
+                entity.HasOne(d => d.Route)
+                    .WithMany(p => p.Schedules)
+                    .HasForeignKey(d => d.RouteId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("route_id_fkey");
+
+                entity.HasOne(d => d.Stop)
+                    .WithMany(p => p.Schedules)
+                    .HasForeignKey(d => d.StopId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("stop_id_fkey");
             });
 
             modelBuilder.HasSequence<int>("bus_bus_id_seq");
