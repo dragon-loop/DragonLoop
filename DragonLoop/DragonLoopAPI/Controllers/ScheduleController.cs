@@ -18,100 +18,93 @@ namespace DragonLoopAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Schedule
+        // GET: api/Schedule?routeid=5
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedules()
+        public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedules(int? routeId)
         {
-            return await _context.Schedules.ToListAsync();
-        }
+            var route = await _context.Routes.FindAsync(routeId);
 
-        // GET: api/Schedule/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Schedule>> GetSchedule(int id)
-        {
-            var schedule = await _context.Schedules.FindAsync(id);
-
-            if (schedule == null)
+            if (route == null)
             {
                 return NotFound();
             }
 
-            return schedule;
+            return route.Schedules.ToList();
         }
 
-        // PUT: api/Schedule/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutSchedule(int id, Schedule schedule)
-        {
-            if (id != schedule.RouteId)
-            {
-                return BadRequest();
-            }
+        //// PUT: api/Schedule/5
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutSchedule(int id, Schedule schedule)
+        //{
+        //    if (id != schedule.RouteId)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(schedule).State = EntityState.Modified;
+        //    _context.Entry(schedule).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ScheduleExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!ScheduleExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        // POST: api/Schedule
-        [HttpPost]
-        public async Task<ActionResult<Schedule>> PostSchedule(Schedule schedule)
-        {
-            _context.Schedules.Add(schedule);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (ScheduleExists(schedule.RouteId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //// POST: api/Schedule
+        //[HttpPost]
+        //public async Task<ActionResult<Schedule>> PostSchedule(Schedule schedule)
+        //{
+        //    _context.Schedules.Add(schedule);
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateException)
+        //    {
+        //        if (ScheduleExists(schedule.RouteId))
+        //        {
+        //            return Conflict();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return CreatedAtAction("GetSchedule", new { id = schedule.RouteId }, schedule);
-        }
+        //    return CreatedAtAction("GetSchedule", new { id = schedule.RouteId }, schedule);
+        //}
 
-        // DELETE: api/Schedule/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Schedule>> DeleteSchedule(int id)
-        {
-            var schedule = await _context.Schedules.FindAsync(id);
-            if (schedule == null)
-            {
-                return NotFound();
-            }
+        //// DELETE: api/Schedule/5
+        //[HttpDelete("{id}")]
+        //public async Task<ActionResult<Schedule>> DeleteSchedule(int id)
+        //{
+        //    var schedule = await _context.Schedules.FindAsync(id);
+        //    if (schedule == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _context.Schedules.Remove(schedule);
-            await _context.SaveChangesAsync();
+        //    _context.Schedules.Remove(schedule);
+        //    await _context.SaveChangesAsync();
 
-            return schedule;
-        }
+        //    return schedule;
+        //}
 
-        private bool ScheduleExists(int id)
-        {
-            return _context.Schedules.Any(e => e.RouteId == id);
-        }
+        //private bool ScheduleExists(int id)
+        //{
+        //    return _context.Schedules.Any(e => e.RouteId == id);
+        //}
     }
 }

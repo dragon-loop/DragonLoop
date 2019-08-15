@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\BusService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\RequestProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\RouteService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ScheduleService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\StopService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MapViewModel.cs" />
   </ItemGroup>
