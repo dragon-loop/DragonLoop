@@ -31,5 +31,5 @@ else
 @code {
     private MapViewModel mapViewModel = new MapViewModel(Settings.UrlBase);
 
-    protected override async Task OnInitAsync() => await mapViewModel.LoadRoutes();
+    protected override async Task OnInitializedAsync() => await mapViewModel.LoadRoutes();
 }
