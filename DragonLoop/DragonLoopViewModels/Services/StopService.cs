@@ -23,10 +23,11 @@ namespace DragonLoopViewModels.Services
             return await RequestProvider.GetAsync<Stop>(uri);
         }
 
-        public async Task<IEnumerable<Stop>> GetStopsAsync()
+        public async Task<IEnumerable<Stop>> GetStopsAsync(int? routeId = null)
         {
             UriBuilder builder = new UriBuilder(UrlBase);
             builder.Path = "/api/stop";
+            if (routeId != null) builder.Query = $"routeid={routeId}";
             string uri = builder.ToString();
 
             return await RequestProvider.GetAsync<IEnumerable<Stop>>(uri);

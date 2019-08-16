@@ -14,10 +14,11 @@ namespace DragonLoopViewModels.Services
         public ScheduleService(string urlBase)
             => UrlBase = urlBase;
 
-        public async Task<IEnumerable<Schedule>> GetRouteSchedulesAsync(string routeId)
+        public async Task<IEnumerable<Schedule>> GetSchedulesAsync(int? routeId = null)
         {
             UriBuilder builder = new UriBuilder(UrlBase);
-            builder.Path = $"/api/schedule?routeid={routeId}";
+            builder.Path = "/api/schedule";
+            if (routeId != null) builder.Query= $"routeid={routeId}";
             string uri = builder.ToString();
 
             return await RequestProvider.GetAsync<IEnumerable<Schedule>>(uri);
