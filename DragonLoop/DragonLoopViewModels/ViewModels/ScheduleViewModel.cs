@@ -12,7 +12,7 @@ namespace DragonLoopViewModels.ViewModels
 
         public IEnumerable<Route> Routes { get; set; }
 
-        public Route SelectedRoute { get; set; }
+        public Route SelectedRoute { get; private set; }
 
         private ScheduleService ScheduleService;
 
