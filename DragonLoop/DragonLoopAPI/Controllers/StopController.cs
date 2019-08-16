@@ -18,11 +18,25 @@ namespace DragonLoopAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Stop
+        // GET: api/Stop?routeid=5
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Stop>>> GetStop()
+        public async Task<ActionResult<IEnumerable<Stop>>> GetStop(int? routeId = null)
         {
-            return await _context.Stops.ToListAsync();
+            if (routeId == null)
+            {
+                return await _context.Stops.ToListAsync();
+            }
+            else
+            {
+                var route = await _context.Routes.FindAsync(routeId);
+
+                if (route == null)
+                {
+                    return NotFound();
+                }
+
+                return route.Stops.ToList();
+            }
         }
 
         // GET: api/Stop/5

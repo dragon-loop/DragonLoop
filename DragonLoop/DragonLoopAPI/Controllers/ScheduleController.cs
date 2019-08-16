@@ -20,16 +20,25 @@ namespace DragonLoopAPI.Controllers
 
         // GET: api/Schedule?routeid=5
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedules(int? routeId)
+        public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedules(int? routeId = null)
         {
-            var route = await _context.Routes.FindAsync(routeId);
-
-            if (route == null)
+            if (routeId == null)
             {
-                return NotFound();
+                return await _context.Schedules.ToListAsync();
+            }
+            else
+            {
+                var route = await _context.Routes.FindAsync(routeId);
+
+                if (route == null)
+                {
+                    return NotFound();
+                }
+
+                return route.Schedules.ToList();
             }
 
-            return route.Schedules.ToList();
+            
         }
 
         //// PUT: api/Schedule/5

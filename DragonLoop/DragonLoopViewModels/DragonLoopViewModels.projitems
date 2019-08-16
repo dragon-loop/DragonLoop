@@ -15,5 +15,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\ScheduleService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\StopService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MapViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ScheduleViewModel.cs" />
   </ItemGroup>
 </Project>

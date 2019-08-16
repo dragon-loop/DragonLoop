@@ -1,0 +1,46 @@
+﻿@page "/schedules"
+@using DragonLoopViewModels.ViewModels
+
+<h1>Schedules</h1>
+
+<p>Dragon Route</p>
+
+@if (scheduleViewModel.Schedules == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                @foreach (var stop in scheduleViewModel.SelectedRoute.Stops)
+                {
+                    <th>@stop.Name</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var schedules in scheduleViewModel.Schedules)
+            {
+                <tr>
+                    @foreach (var schedule in schedules)
+                    {
+                        <td>@schedule.ExpectedTime.ToString("hh\\:mm")</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private ScheduleViewModel scheduleViewModel = new ScheduleViewModel(Settings.UrlBase);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await scheduleViewModel.LoadRoutes();
+        await scheduleViewModel.SetSelectedRoute(scheduleViewModel.Routes.First());
+        await scheduleViewModel.LoadSchedule();
+    }
+}
