@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace DragonLoopAPI
 {
@@ -19,15 +21,16 @@ namespace DragonLoopAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest)
-                             .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddControllers()
+                    .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+                             
+
             services.AddEntityFrameworkNpgsql()
-                    .AddDbContext<DragonLoopContext>(context => context.UseLazyLoadingProxies().UseNpgsql(Configuration.GetSection("PgConnectionString").Value))
-                    .BuildServiceProvider();
+                    .AddDbContext<DragonLoopContext>(context => context.UseLazyLoadingProxies().UseNpgsql(Configuration.GetSection("PgConnectionString").Value));
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info() {
+                c.SwaggerDoc("v1", new OpenApiInfo {
                     Title = "Dragon Loop API",
                     Version = "v1"
                 });
@@ -35,15 +38,11 @@ namespace DragonLoopAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
             }
 
             app.UseCors(policy => policy.WithOrigins("http://localhost:55495")); //Use CORS during development
@@ -56,7 +55,15 @@ namespace DragonLoopAPI
             });
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
