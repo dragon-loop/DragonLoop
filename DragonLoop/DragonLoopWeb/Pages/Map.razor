@@ -38,6 +38,7 @@ else
     protected override async Task OnInitializedAsync()
         => await mapViewModel.LoadRoutes();
 
-    protected override async Task OnAfterRenderAsync()
-        => await JsRuntime.InvokeAsync<object>("jsFunctions.initMap");
-}
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+        => await JsRuntime.InvokeAsync<object>
+    ("jsFunctions.initMap");
+    }
