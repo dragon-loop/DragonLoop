@@ -85,6 +85,39 @@ namespace DragonLoopAPI.Controllers
             return NoContent();
         }
 
+        //PUT: api/Bus/5/UpdateBusLocation
+        ///<summary>
+        /// This method will update a bus's location given an ID. The request will be made as follows:
+        /// content-type: application/json
+        /// {
+        ///		XCoordinate : "1.00",
+        ///		YCoordinate : "1.00"
+        /// }
+        /// </summary>
+        [HttpPut("{id}/UpdateBusLocation")]
+        public async Task<IActionResult> PutBusLocation(int id, Bus newBusCoord)
+        {
+            Bus existingBus = await _context.Buses.FindAsync(id);
+
+            if (existingBus != null)
+            {
+                existingBus.XCoordinate = newBusCoord.XCoordinate;
+                existingBus.YCoordinate = newBusCoord.YCoordinate;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+
+                    return Ok();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+            }
+            return NoContent();
+        }
+
         // POST: api/Bus
         [HttpPost]
         public async Task<ActionResult<Bus>> PostBus(Bus bus)
