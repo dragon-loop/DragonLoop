@@ -97,7 +97,7 @@ namespace DragonLoopAPI.Controllers
 		[HttpPut("{id}/UpdateBusLocation")]
 		public async Task<IActionResult> PutBusLocation(int id, Bus newBusCoord)
 		{
-			var existingBus = _context.Buses.Where(b => b.BusId == id).FirstOrDefault<Bus>();
+            Bus existingBus = await _context.Buses.FindAsync(id);
 			
 			if(existingBus != null)
 			{
@@ -112,14 +112,7 @@ namespace DragonLoopAPI.Controllers
 				}
 				catch (DbUpdateConcurrencyException)
 				{
-					if (!BusExists(id))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
+                    throw;
 				}
 			}
 			return NoContent();
