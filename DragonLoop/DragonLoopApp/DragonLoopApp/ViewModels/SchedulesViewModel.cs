@@ -1,7 +1,4 @@
-﻿using DragonLoopModels;
-using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,14 +12,14 @@ namespace DragonLoopApp.ViewModels
 
         private bool IsBusy { get; set; }
 
-        public ObservableCollection<ListView> TripsCollection { get; set; }
+        public Grid SchedulesGrid { get; set; }
 
         public Command LoadSchedulesCommand { get; set; }
 
-        public SchedulesViewModel() : base(Settings.UrlBase)
+        public SchedulesViewModel(Grid schedulesGrid) : base(Settings.UrlBase)
         {
             Title = "Schedules";
-            TripsCollection = new ObservableCollection<ListView>();
+            SchedulesGrid = schedulesGrid;
             LoadSchedulesCommand = new Command(async () => await ExecuteLoadSchedulesCommand());
         }
 
@@ -35,33 +32,40 @@ namespace DragonLoopApp.ViewModels
 
             try
             {
-                TripsCollection.Clear();
                 await LoadRoutes();
                 await SetSelectedRoute(Routes.First());
                 await LoadSchedule();
 
-                foreach (var trip in Schedules)
+                SchedulesGrid.RowDefinitions.Add(new RowDefinition());
+
+                int col = 0;
+                foreach (var stop in SelectedRoute.Stops)
                 {
-                    var schedulesCollection = new ObservableCollection<Schedule>();                    
-                    foreach (var schedule in trip)
+                    SchedulesGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                    var label = new Label
                     {
-                        schedulesCollection.Add(schedule);
-
-                        var label = new Label();
-                    }
-
-                    var listView = new ListView
-                    {
-                        ItemsSource = schedulesCollection,
-                        ItemTemplate = new DataTemplate(() =>
-                        {
-                            return new ViewCell
-                            {
-                                View = new Label()
-                            };
-                        })
+                        Text = stop.Name,
+                        FontAttributes = FontAttributes.Bold
                     };
-                    TripsCollection.Add(listView);
+                    SchedulesGrid.Children.Add(label, col, 0);
+                    col++;
+                }
+
+                int row = 1;
+                foreach (var schedules in Schedules)
+                {                   
+                    SchedulesGrid.RowDefinitions.Add(new RowDefinition());
+                    col = 0;
+                    foreach (var schedule in schedules)
+                    {
+                        var label = new Label
+                        {
+                            Text = schedule.ExpectedTime.ToString("hh\\:mm")
+                        };
+                        SchedulesGrid.Children.Add(label, col, row);
+                        col++;
+                    }
+                    row++;
                 }
             }
             catch (Exception ex)

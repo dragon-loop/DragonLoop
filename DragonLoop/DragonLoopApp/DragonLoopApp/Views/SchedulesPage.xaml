@@ -7,28 +7,10 @@
              x:Class="DragonLoopApp.Views.SchedulesPage"
              Title="{Binding Title}">
     <ContentPage.Content>
-        <StackLayout>
-            <ListView x:Name="SchedulesListView"
-                ItemsSource="{Binding TripsCollection}"
-                VerticalOptions="FillAndExpand"
-                HasUnevenRows="true"
-                RefreshCommand="{Binding LoadSchedulesCommand}"
-                IsPullToRefreshEnabled="true"
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                CachingStrategy="RecycleElement">
-                <!--<ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Padding="10">
-                                <Label Text="{Binding Name}" 
-                                d:Text="{Binding .}"
-                                LineBreakMode="NoWrap"
-                                FontSize="16" />
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>-->
-            </ListView>
-        </StackLayout>
+        <ScrollView>
+            <StackLayout>
+                <Grid x:Name="SchedulesGrid"></Grid>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
