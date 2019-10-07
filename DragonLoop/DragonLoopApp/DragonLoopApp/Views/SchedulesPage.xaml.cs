@@ -1,9 +1,5 @@
 ﻿using DragonLoopApp.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -19,14 +15,14 @@ namespace DragonLoopApp.Views
         {
             InitializeComponent();
 
-            BindingContext = viewModel = new SchedulesViewModel();
+            BindingContext = viewModel = new SchedulesViewModel(SchedulesGrid);
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            if (viewModel.Schedules == null || !viewModel.Schedules.Any())                
+            if (viewModel.Schedules == null || !viewModel.Schedules.Any())
                 viewModel.LoadSchedulesCommand.Execute(null);
         }
     }
