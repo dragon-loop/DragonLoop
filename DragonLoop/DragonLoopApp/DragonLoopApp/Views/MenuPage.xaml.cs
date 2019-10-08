@@ -21,7 +21,6 @@ namespace DragonLoopApp.Views
             menuItems = new List<HomeMenuItem>
             {
                 new HomeMenuItem {Id = MenuItemType.Map, Title="Map" },
-                new HomeMenuItem {Id = MenuItemType.Schedules, Title="Schedules" },
                 new HomeMenuItem {Id = MenuItemType.About, Title="About" }
             };
 
