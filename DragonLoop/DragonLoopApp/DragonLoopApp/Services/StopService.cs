@@ -12,7 +12,7 @@ namespace DragonLoopApp.Services
         public async Task<Stop> GetItemAsync(string id)
         {
             UriBuilder builder = new UriBuilder(Settings.UrlBase);
-            builder.Path = $"/api/stop/{id}";
+            builder.Path = $"/api/Stop/{id}";
             string uri = builder.ToString();
 
             return await RequestProvider.GetAsync<Stop>(uri);
@@ -21,7 +21,7 @@ namespace DragonLoopApp.Services
         public async Task<IEnumerable<Stop>> GetItemsAsync()
         {
             UriBuilder builder = new UriBuilder(Settings.UrlBase);
-            builder.Path = "/api/stop";
+            builder.Path = "/api/Stop";
             string uri = builder.ToString();
 
             return await RequestProvider.GetAsync<IEnumerable<Stop>>(uri);
