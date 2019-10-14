@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  web:
+    image: docker.pkg.github.com/dragon-loop/dragonloop/web:dev
+    build:
+      context: ./
+      dockerfile: ./DragonLoopWeb/Dockerfile
+      target: build
+    ports:
+      - 80:55495
+
+  api:
+    image: docker.pkg.github.com/dragon-loop/dragonloop/api:dev
+    build:
+      context: ./
+      dockerfile: ./DragonLoopAPI/Dockerfile
+      target: build
+    ports:
+      - 5001:5001
+
+  db:
+    image: postgres:12-alpine
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
+    driver: local
