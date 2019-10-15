@@ -17,7 +17,6 @@ namespace DragonLoopApp.Views
     {
         MapViewModel viewModel;
 
-        
         public MapPage()
         {
             InitializeComponent();
@@ -35,27 +34,29 @@ namespace DragonLoopApp.Views
 
         private async void Handle_Route_Toggle(object sender, Xamarin.Forms.ToggledEventArgs e)
         {
+            ViewCell cell = (sender as Switch).Parent.Parent as ViewCell;
+            Route route = cell.BindingContext as Route;
+
             //set up stop on screen
-            if (e.Value == true)
+            if (e.Value)
             {
-                ViewCell cell = (sender as Switch).Parent.Parent as ViewCell;
-                Route route = cell.BindingContext as Route;
 
                 if (route != null)
                 {
                     await viewModel.LoadRouteStops(route.RouteId);
                     
                     //Load pins onto map
-                    List<Stop> stops = new List<Stop>(viewModel.RouteStops);
-                    for(int i = 0; i < viewModel.RouteStops.Count(); i++)
+                    foreach(var stop in viewModel.RouteStops)
                     {
                         var pin = new Pin()
                         {
-                            Position = new Position(Decimal.ToDouble(stops[i].XCoordinate), Decimal.ToDouble(stops[i].YCoordinate)),
-                            Label = stops[i].Name
+                            Position = new Position(Decimal.ToDouble(stop.XCoordinate), Decimal.ToDouble(stop.YCoordinate)),
+                            Label = stop.Name,
+                            Address = stop.RouteId.ToString()
                         };
                         viewModel.Map.Pins.Add(pin);
                     }
+                    List<Stop> stops = new List<Stop>(viewModel.RouteStops);
 
                     //TODO: Create a route -> This requires a custom map object:
                     // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/custom-renderer/map/polyline-map-overlay
@@ -64,7 +65,21 @@ namespace DragonLoopApp.Views
             //clear stops on screen
             else
             {
-                viewModel.Map.Pins.Clear();
+                //Remove pins from stuff disabled
+                if(route != null)
+                {
+                    await viewModel.LoadRouteStops(route.RouteId);
+
+                    List<Pin> stopsRemove = viewModel.Map.Pins.Where(s => s.Address == route.RouteId.ToString()).ToList();
+
+                    if (stopsRemove.Count > 0)
+                    {
+                        foreach(var pin in stopsRemove)
+                        {
+                            viewModel.Map.Pins.Remove(pin);
+                        }
+                    }
+                }
             }
         }
 
