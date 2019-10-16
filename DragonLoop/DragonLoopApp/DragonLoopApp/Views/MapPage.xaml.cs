@@ -29,7 +29,7 @@ namespace DragonLoopApp.Views
             base.OnAppearing();
 
             if (viewModel.Routes == null || !viewModel.Routes.Any())
-                viewModel.LoadRoutesCommand.Execute(null);
+                viewModel.LoadDataCommand.Execute(null);
         }
 
         private async void Handle_Route_Toggle(object sender, Xamarin.Forms.ToggledEventArgs e)
