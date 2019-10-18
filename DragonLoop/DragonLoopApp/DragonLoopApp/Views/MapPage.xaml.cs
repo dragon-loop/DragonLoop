@@ -44,7 +44,8 @@ namespace DragonLoopApp.Views
                 if (route != null)
                 {
                     await viewModel.LoadRouteStops(route.RouteId);
-                    
+                    await viewModel.LoadBuses();
+
                     //Load pins onto map
                     foreach(var stop in viewModel.RouteStops)
                     {
@@ -56,7 +57,18 @@ namespace DragonLoopApp.Views
                         };
                         viewModel.Map.Pins.Add(pin);
                     }
-                    List<Stop> stops = new List<Stop>(viewModel.RouteStops);
+
+                    foreach(var bus in viewModel.BusCollection)
+                    {
+                        var pin = new Pin
+                        {
+                            Position = new Position(Decimal.ToDouble(bus.XCoordinate), Decimal.ToDouble(bus.YCoordinate)),
+                            Label = bus.BusId.ToString(),
+                            Type = PinType.Generic,
+                            Address = bus.RouteId.ToString()
+                        };
+                        viewModel.Map.Pins.Add(pin);
+                    }
 
                     //TODO: Create a route -> This requires a custom map object:
                     // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/custom-renderer/map/polyline-map-overlay
