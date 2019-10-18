@@ -47,7 +47,6 @@ namespace DragonLoopApp.ViewModels
 
             try
             {
-                await ExecuteLoadBuses();
                 await ExecuteLoadRoutes();
             }
             catch (Exception ex)
@@ -59,31 +58,6 @@ namespace DragonLoopApp.ViewModels
                 IsBusy = false;
             }
         }
-
-        public async Task ExecuteLoadBuses()
-        {
-            try
-            {
-                BusCollection.Clear();
-                await LoadBuses();
-                foreach (var bus in Buses)
-                {
-                    BusCollection.Add(bus);
-                    var pin = new Pin
-                    {
-                        Position = new Position(Decimal.ToDouble(bus.XCoordinate), Decimal.ToDouble(bus.YCoordinate)),
-                        Label = bus.BusId.ToString(),
-                        Type = PinType.Generic
-                    };
-                    Map.Pins.Add(pin);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-        }
-
         private async Task ExecuteLoadRoutes()
         {
             try
