@@ -49,25 +49,31 @@ namespace DragonLoopApp.Views
                     //Load pins onto map
                     foreach(var stop in viewModel.RouteStops)
                     {
-                        var pin = new Pin()
+                        var pin = new CustomPin()
                         {
                             Position = new Position(Decimal.ToDouble(stop.XCoordinate), Decimal.ToDouble(stop.YCoordinate)),
                             Label = stop.Name,
-                            Address = stop.RouteId.ToString()
+                            RouteId = stop.RouteId,
+                            Type = PinType.Place
                         };
                         viewModel.Map.Pins.Add(pin);
+                        viewModel.Map.CustomPins.Add(pin);
                     }
 
-                    foreach(var bus in viewModel.BusCollection)
+                    List<Bus> selectedRouteBus = viewModel.Buses.Where(b => b.RouteId == route.RouteId).ToList();
+
+                    foreach(var bus in selectedRouteBus)
                     {
-                        var pin = new Pin
+                        var pin = new CustomPin
                         {
                             Position = new Position(Decimal.ToDouble(bus.XCoordinate), Decimal.ToDouble(bus.YCoordinate)),
                             Label = bus.BusId.ToString(),
                             Type = PinType.Generic,
-                            Address = bus.RouteId.ToString()
+                            RouteId = bus.RouteId
                         };
                         viewModel.Map.Pins.Add(pin);
+                        viewModel.Map.CustomPins.Add(pin);
+
                     }
 
                     //TODO: Create a route -> This requires a custom map object:
@@ -82,12 +88,13 @@ namespace DragonLoopApp.Views
                 {
                     await viewModel.LoadRouteStops(route.RouteId);
 
-                    List<Pin> stopsRemove = viewModel.Map.Pins.Where(s => s.Address == route.RouteId.ToString()).ToList();
+                    List<CustomPin> stopsRemove = viewModel.Map.CustomPins.Where(s => s.RouteId == route.RouteId).ToList();
 
                     if (stopsRemove.Count > 0)
                     {
                         foreach(var pin in stopsRemove)
                         {
+                            viewModel.Map.CustomPins.Remove(pin);
                             viewModel.Map.Pins.Remove(pin);
                         }
                     }
