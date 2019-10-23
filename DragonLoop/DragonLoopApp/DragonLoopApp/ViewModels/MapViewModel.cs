@@ -7,6 +7,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
 using DragonLoopModels;
+using DragonLoopApp.Views;
 
 namespace DragonLoopApp.ViewModels
 {
@@ -22,7 +23,7 @@ namespace DragonLoopApp.ViewModels
 
         public Command LoadDataCommand { get; set; }
 
-        public Map Map { get; set; }
+        public CustomMap Map { get; set; }
 
         public MapViewModel() : base(Settings.UrlBase)
         {
