@@ -10,6 +10,7 @@ namespace DragonLoopModels
             Buses = new HashSet<Bus>();
             Schedules = new HashSet<Schedule>();
             Stops = new HashSet<Stop>();
+            RouteSegments = new HashSet<RouteSegment>();
         }
 
         public int RouteId { get; set; }
@@ -24,5 +25,8 @@ namespace DragonLoopModels
 
         [JsonIgnore]
         public virtual ICollection<Stop> Stops { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<RouteSegment> RouteSegments { get; set; }
     }
 }
