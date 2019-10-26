@@ -27,6 +27,8 @@ CREATE TABLE public.route_segments
     next_route_segment_id integer,
     from_stop_id integer,
     CONSTRAINT route_segments_pkey PRIMARY KEY (route_segment_id),
+    CONSTRAINT next_route_segment_id_key UNIQUE (next_route_segment_id)
+,
     CONSTRAINT from_stop_id_fkey FOREIGN KEY (from_stop_id)
         REFERENCES public.stops (stop_id) MATCH SIMPLE
         ON UPDATE CASCADE
