@@ -6,8 +6,9 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /src/DragonLoopWeb
 EXPOSE 55495
-COPY ./DragonLoopWeb/DragonLoopWeb.csproj .
-RUN dotnet restore "DragonLoopWeb.csproj"
+COPY DragonLoopWeb/*.csproj ./
+RUN dotnet restore
+#RUN dotnet restore "DragonLoopWeb.csproj"
 COPY ./DragonLoopWeb .
 COPY ./DragonLoopModels/ ../DragonLoopModels
 COPY ./DragonLoopViewModels ../DragonLoopViewModels
