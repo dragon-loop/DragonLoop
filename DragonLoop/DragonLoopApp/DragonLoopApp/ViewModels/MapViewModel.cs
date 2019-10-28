@@ -7,6 +7,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
 using DragonLoopModels;
+using DragonLoopApp.Views;
 
 namespace DragonLoopApp.ViewModels
 {
@@ -17,16 +18,19 @@ namespace DragonLoopApp.ViewModels
         private bool IsBusy { get; set; }
 
         public ObservableCollection<Route> RoutesCollection { get; set; }
+        
+        public ObservableCollection<Bus> BusCollection { get; set; }
 
-        public Command LoadRoutesCommand { get; set; }
+        public Command LoadDataCommand { get; set; }
 
-        public Map Map { get; set; }
+        public CustomMap Map { get; set; }
 
         public MapViewModel() : base(Settings.UrlBase)
         {
             Title = "Map";
             RoutesCollection = new ObservableCollection<Route>();
-            LoadRoutesCommand = new Command(async () => await ExecuteLoadRoutesCommand());
+            BusCollection = new ObservableCollection<Bus>();
+            LoadDataCommand = new Command(async () => await ExecuteLoadDataCommand());
             Map = new Map(
                 MapSpan.FromCenterAndRadius(
                     new Position(39.955615, -75.189490), Distance.FromMiles(0.5)))
@@ -35,13 +39,28 @@ namespace DragonLoopApp.ViewModels
                         };
         }
 
-        private async Task ExecuteLoadRoutesCommand()
+        private async Task ExecuteLoadDataCommand()
         {
             if (IsBusy)
                 return;
 
             IsBusy = true;
 
+            try
+            {
+                await ExecuteLoadRoutes();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+        private async Task ExecuteLoadRoutes()
+        {
             try
             {
                 RoutesCollection.Clear();
@@ -54,10 +73,6 @@ namespace DragonLoopApp.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
             }
         }
     }
