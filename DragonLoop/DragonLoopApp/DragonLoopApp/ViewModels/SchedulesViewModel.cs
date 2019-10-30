@@ -32,6 +32,10 @@ namespace DragonLoopApp.ViewModels
 
             try
             {
+                SchedulesGrid.Children.Clear();
+                SchedulesGrid.RowDefinitions.Clear();
+                SchedulesGrid.ColumnDefinitions.Clear();
+
                 await LoadRoutes();
                 await SetSelectedRoute(Routes.First());
                 await LoadSchedule();
