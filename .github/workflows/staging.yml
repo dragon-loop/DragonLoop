@@ -6,20 +6,23 @@ on:
       - develop
 
 jobs:
-  build:
+  deploy:
     if: github.event.pull_request.merged
+    env:
+      DOCKER_USERNAME:  ${{ secrets.GITHUB_DOCKER_USERNAME }}
+      DOCKER_REGISTRY: docker.pkg.github.com/dragon-loop/dragonloop/
+      GITHUB_PACKAGE_REGISTRY_TOKEN: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
+      TAG: staging
+
     runs-on: ubuntu-latest
   
     steps:
     - name: 'Checkout Github Action' 
       uses: actions/checkout@master
+      with:
+        ref: develop
   
     - name: 'Login, build and push to registry'
-      env:
-        DOCKER_USERNAME:  ${{ secrets.GITHUB_DOCKER_USERNAME }}
-        DOCKER_REGISTRY: docker.pkg.github.com/dragon-loop/dragonloop/
-        GITHUB_PACKAGE_REGISTRY_TOKEN: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
-        TAG: staging
     - run: |
         cd ./DragonLoop
         docker login docker.pkg.github.com -u "${DOCKER_USERNAME}" -p "${GITHUB_PACKAGE_REGISTRY_TOKEN}"
