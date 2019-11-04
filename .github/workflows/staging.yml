@@ -23,7 +23,7 @@ jobs:
         ref: develop
   
     - name: 'Login, build and push to registry'
-    - run: |
+      run: |
         cd ./DragonLoop
         docker login docker.pkg.github.com -u "${DOCKER_USERNAME}" -p "${GITHUB_PACKAGE_REGISTRY_TOKEN}"
         docker-compose build
@@ -34,7 +34,8 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - uses: azure/webapps-container-deploy@v1
+    - name: 'Deploy to Azure'
+      uses: azure/webapps-container-deploy@v1
       with:
         app-name: dragonloops
         creds: ${{ secrets.azureWebAppPublishProfile }}
