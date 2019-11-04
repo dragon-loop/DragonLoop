@@ -9,7 +9,7 @@ RUN dotnet restore "DragonLoopAPI/DragonLoopAPI.csproj"
 COPY . .
 WORKDIR "/src/DragonLoopAPI"
 RUN dotnet build "DragonLoopAPI.csproj" -c Release -o /app/build
-RUN dotnet user-secrets set "PgConnectionString" "Server=db"
+#RUN dotnet user-secrets set "PgConnectionString" "Server=db;Port=5432;User Id=postgres;Password=password;Database=postgres;"
 ENTRYPOINT [ "dotnet", "run" ]
 
 FROM dev AS publish

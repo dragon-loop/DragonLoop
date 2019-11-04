@@ -22,6 +22,6 @@ RUN dotnet publish "DragonLoopWeb.csproj" --self-contained -c Release -o /app/pu
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT [ "bash" ]
-#ENTRYPOINT ["dotnet", "DragonLoopWeb.dll"]
+#ENTRYPOINT [ "bash" ]
+ENTRYPOINT ["dotnet", "DragonLoopWeb.dll"]
 

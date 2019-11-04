@@ -5,7 +5,8 @@ services:
     image: ${DOCKER_REGISTRY-}dragonloopapi
     build:
       context: .
-      dockerfile: DragonLoopAPI/Dockerfile
+      dockerfile: ./Dockerfile.api
+
   dragonloopweb:
     image: ${DOCKER_REGISTRY-}dragonloopweb
     build:
@@ -16,6 +17,8 @@ services:
     image: postgres:12-alpine
     volumes:
       - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
 volumes:
   db-data:
