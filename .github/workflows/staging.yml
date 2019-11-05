@@ -38,4 +38,7 @@ jobs:
           app-name: dragonloops
           creds: ${{ secrets.azureWebAppPublishProfile }}
           configuration-file: DragonLoop/docker-compose.yml
-          
+          images: |
+            ${DOCKER_REGISTRY-}dragonloopapi${TAG-}
+            ${DOCKER_REGISTRY-}dragonloopapi${TAG-}
+            postgres:12-alpine
