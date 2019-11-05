@@ -4,3 +4,17 @@ services:
   dragonloopapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - "./:/src/"
+    build:
+      target: build
+      context: .
+      dockerfile: DragonLoopAPI/Dockerfile
+
+  dragonloopweb:
+    volumes:
+      - "./:/src/"
+    build:
+      target: build
+      context: .
+      dockerfile: DragonLoopWeb/Dockerfile
