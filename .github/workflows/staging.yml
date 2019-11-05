@@ -37,3 +37,5 @@ jobs:
         with:
           app-name: dragonloops
           creds: ${{ secrets.azureWebAppPublishProfile }}
+          configuration-file: DragonLoop/docker-compose.yml
+          
