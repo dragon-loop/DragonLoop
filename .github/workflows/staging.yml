@@ -24,7 +24,8 @@ jobs:
 
       - name: "Login, build and push to registry"
         run: |
-          cd ./DragonLoop
+          cd DragonLoop
+          ls -a
           docker login docker.pkg.github.com -u "${DOCKER_USERNAME}" -p "${GITHUB_PACKAGE_REGISTRY_TOKEN}"
           docker-compose build
           docker-compose push
