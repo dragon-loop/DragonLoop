@@ -2,16 +2,26 @@ version: "3.7"
 
 services:
   dragonloopapi:
-    image: ${DOCKER_REGISTRY-}dragonloopapi
+    image: ${DOCKER_REGISTRY-}dragonloopapi${TAG-}
     build:
+      target: build
       context: .
-      dockerfile: ./Dockerfile.api
+      dockerfile: DragonLoopAPI/Dockerfile
+    volumes:
+      - "./:/src/"
+    ports:
+      - "5001:5001"
 
   dragonloopweb:
-    image: ${DOCKER_REGISTRY-}dragonloopweb
+    image: ${DOCKER_REGISTRY-}dragonloopweb${TAG-}
     build:
+      target: build
       context: .
       dockerfile: DragonLoopWeb/Dockerfile
+    volumes:
+      - "./:/src/"
+    ports:
+      - "80:55495"
 
   db:
     image: postgres:12-alpine

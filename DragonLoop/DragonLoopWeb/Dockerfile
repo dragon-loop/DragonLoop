@@ -13,7 +13,7 @@ COPY ./DragonLoopWeb .
 COPY ./DragonLoopModels/ ../DragonLoopModels
 COPY ./DragonLoopViewModels ../DragonLoopViewModels
 RUN dotnet build "DragonLoopWeb.csproj" -c Debug -o /app/build
-ENTRYPOINT [ "dotnet", "run" ]
+ENTRYPOINT [ "dotnet", "watch", "run"]
 
 FROM build AS publish
 RUN dotnet publish "DragonLoopWeb.csproj" --self-contained -c Release -o /app/publish
