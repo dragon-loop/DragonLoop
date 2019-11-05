@@ -4,5 +4,3 @@ services:
   dragonloopapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "8000:80"
