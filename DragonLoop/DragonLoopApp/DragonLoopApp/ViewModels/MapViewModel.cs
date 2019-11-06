@@ -31,7 +31,7 @@ namespace DragonLoopApp.ViewModels
             RoutesCollection = new ObservableCollection<Route>();
             BusCollection = new ObservableCollection<Bus>();
             LoadDataCommand = new Command(async () => await ExecuteLoadDataCommand());
-            Map = new Map(
+            Map = new CustomMap(
                 MapSpan.FromCenterAndRadius(
                     new Position(39.955615, -75.189490), Distance.FromMiles(0.5)))
                         {
