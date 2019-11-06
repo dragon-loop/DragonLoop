@@ -12,7 +12,7 @@ jobs:
       DOCKER_USERNAME: ${{ secrets.GITHUB_DOCKER_USERNAME }}
       DOCKER_REGISTRY: docker.pkg.github.com/dragon-loop/dragonloop/
       GITHUB_PACKAGE_REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      TAG: :staging
+      TAG: :${{ github.sha }}
 
     runs-on: ubuntu-latest
 
@@ -25,7 +25,7 @@ jobs:
           cd DragonLoop
           docker login docker.pkg.github.com -u "${DOCKER_USERNAME}" -p "${GITHUB_PACKAGE_REGISTRY_TOKEN}"
           docker-compose build
-          docker-compose push
+          #docker-compose push
 
       - name: "Login via Azure CLI"
         uses: azure/login@v1
@@ -36,7 +36,7 @@ jobs:
         uses: azure/webapps-container-deploy@v1
         with:
           app-name: dragonloops
-          creds: ${{ secrets.azureWebAppPublishProfile }}
+          #creds: ${{ secrets.azureWebAppPublishProfile }}
           configuration-file: DragonLoop/docker-compose.yml
           images: |
             ${DOCKER_REGISTRY-}dragonloopapi${TAG-}
