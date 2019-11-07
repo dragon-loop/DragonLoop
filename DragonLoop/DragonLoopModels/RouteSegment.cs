@@ -6,13 +6,9 @@ namespace DragonLoopModels
     {
         public int RouteSegmentId { get; set; }
 
-        public decimal StartXCoorddinate { get; set; }
+        public decimal StartXCoordinate { get; set; }
 
         public decimal StartYCoordinate { get; set; }
-
-        public decimal EndXCoordinate { get; set; }
-
-        public decimal EndYCoordinate { get; set; }
 
         public int RouteId { get; set; }
 

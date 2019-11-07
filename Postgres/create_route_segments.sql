@@ -21,10 +21,8 @@ CREATE TABLE public.route_segments
     route_segment_id integer NOT NULL DEFAULT nextval('route_segments_route_segment_id_seq'::regclass),
     start_x_coordinate numeric NOT NULL,
     start_y_coordinate numeric NOT NULL,
-    end_x_coordinate numeric NOT NULL,
-    end_y_coordinate numeric NOT NULL,
     route_id integer NOT NULL,
-    next_route_segment_id integer,
+    next_route_segment_id integer NOT NULL,
     from_stop_id integer,
     CONSTRAINT route_segments_pkey PRIMARY KEY (route_segment_id),
     CONSTRAINT next_route_segment_id_key UNIQUE (next_route_segment_id)
