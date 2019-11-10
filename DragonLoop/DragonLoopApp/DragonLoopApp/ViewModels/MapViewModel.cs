@@ -2,10 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
-
 using DragonLoopModels;
 using DragonLoopApp.Views;
 

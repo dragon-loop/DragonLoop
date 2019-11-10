@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using DragonLoopModels;
 using Xamarin.Forms;
 
 namespace DragonLoopApp.ViewModels
@@ -12,18 +13,27 @@ namespace DragonLoopApp.ViewModels
 
         private bool IsBusy { get; set; }
 
+        public Picker SelectRoute { get; set; }
+
         public Grid SchedulesGrid { get; set; }
 
         public Command LoadSchedulesCommand { get; set; }
 
-        public SchedulesViewModel(Grid schedulesGrid) : base(Settings.UrlBase)
+        public Route GetSelectedRoute()
+        {
+            var routes = Routes.Where(r => r.Name == SelectRoute.SelectedItem.ToString());
+            return routes.First();
+        }
+
+        public SchedulesViewModel(Picker selectRoute, Grid schedulesGrid) : base(Settings.UrlBase)
         {
             Title = "Schedules";
             SchedulesGrid = schedulesGrid;
-            LoadSchedulesCommand = new Command(async () => await ExecuteLoadSchedulesCommand());
+            SelectRoute = selectRoute;
+            LoadSchedulesCommand = new Command(async () => await ExecuteLoadSchedulesCommandAsync());
         }
 
-        private async Task ExecuteLoadSchedulesCommand()
+        private async Task ExecuteLoadSchedulesCommandAsync()
         {
             if (IsBusy)
                 return;
@@ -35,42 +45,58 @@ namespace DragonLoopApp.ViewModels
                 SchedulesGrid.Children.Clear();
                 SchedulesGrid.RowDefinitions.Clear();
                 SchedulesGrid.ColumnDefinitions.Clear();
+                SchedulesGrid.RowDefinitions.Add(new RowDefinition());
 
                 await LoadRoutes();
                 await SetSelectedRoute(Routes.First());
                 await LoadSchedule();
 
-                SchedulesGrid.RowDefinitions.Add(new RowDefinition());
-
-                int col = 0;
-                foreach (var stop in SelectedRoute.Stops)
+                foreach (var route in Routes)
                 {
-                    SchedulesGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                    var label = new Label
-                    {
-                        Text = stop.Name,
-                        FontAttributes = FontAttributes.Bold
-                    };
-                    SchedulesGrid.Children.Add(label, col, 0);
-                    col++;
+                    SelectRoute.Items.Add(route.Name);
                 }
 
-                int row = 1;
-                foreach (var schedules in Schedules)
-                {                   
-                    SchedulesGrid.RowDefinitions.Add(new RowDefinition());
-                    col = 0;
-                    foreach (var schedule in schedules)
+                SelectRoute.SelectedIndexChanged += async (sender, args) =>
+                {
+                    SchedulesGrid.Children.Clear();
+                    SchedulesGrid.RowDefinitions.Clear();
+                    SchedulesGrid.ColumnDefinitions.Clear();
+
+                    if (SelectRoute.SelectedIndex != -1)
                     {
-                        var label = new Label
+                        int col = 0;
+                        await SetSelectedRoute(GetSelectedRoute());
+                        await LoadSchedule();
+                        foreach (var stop in SelectedRoute.Stops)
                         {
-                            Text = schedule.ExpectedTime.ToString("hh\\:mm")
-                        };
-                        SchedulesGrid.Children.Add(label, col, row);
-                        col++;
+                            SchedulesGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                            var label = new Label
+                            {
+                                Text = stop.Name,
+                                FontAttributes = FontAttributes.Bold
+                            };
+                            SchedulesGrid.Children.Add(label, col, 0);
+                            col++;
+                        }
+
+                        int row = 1;
+                        foreach (var schedules in Schedules)
+                        {
+                            SchedulesGrid.RowDefinitions.Add(new RowDefinition());
+                            col = 0;
+                            foreach (var schedule in schedules)
+                            {
+                                var label = new Label
+                                {
+                                    Text = schedule.ExpectedTime.ToString("hh\\:mm")
+                                };
+                                SchedulesGrid.Children.Add(label, col, row);
+                                col++;
+                            }
+                            row++;
+                        }
                     }
-                    row++;
-                }
+                };
             }
             catch (Exception ex)
             {
