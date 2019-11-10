@@ -1,6 +1,5 @@
 ﻿using DragonLoopApp.ViewModels;
 using System.Linq;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,7 +14,7 @@ namespace DragonLoopApp.Views
         {
             InitializeComponent();
 
-            BindingContext = viewModel = new SchedulesViewModel(SchedulesGrid);
+            BindingContext = viewModel = new SchedulesViewModel(SelectRoute, SchedulesGrid);
         }
 
         protected override void OnAppearing()

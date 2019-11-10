@@ -9,6 +9,9 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
+                <Picker x:Name="SelectRoute"
+                        Title="Select a Route"
+                        TitleColor="Black"/>
                 <Grid x:Name="SchedulesGrid"></Grid>
             </StackLayout>
         </ScrollView>
