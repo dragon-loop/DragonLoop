@@ -10,9 +10,11 @@
         <ScrollView>
             <StackLayout>
                 <Picker x:Name="SelectRoute"
-                        Title="Select a Route"
-                        TitleColor="Black"/>
-                <Grid x:Name="SchedulesGrid"></Grid>
+                        TitleColor="Black"
+                        ItemsSource="{Binding RoutesCollection}"
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedIndexChanged="SelectRouteIndexChanged" />
+                <Grid x:Name="SchedulesGrid" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

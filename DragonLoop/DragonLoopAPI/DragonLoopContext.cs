@@ -70,6 +70,10 @@ namespace DragonLoopAPI
                     .HasName("next_route_segment_id_key")
                     .IsUnique();
 
+                entity.HasIndex(e => e.NextRouteSegmentId)
+                    .HasName("next_route_segment_id_key")
+                    .IsUnique();
+
                 entity.Property(e => e.RouteSegmentId).HasColumnName("route_segment_id");
 
                 entity.Property(e => e.FromStopId).HasColumnName("from_stop_id");
@@ -87,8 +91,8 @@ namespace DragonLoopAPI
                     .HasColumnType("numeric");
 
                 entity.HasOne(d => d.FromStop)
-                    .WithMany(p => p.RouteSegments)
-                    .HasForeignKey(d => d.FromStopId)
+                    .WithOne(p => p.RouteSegment)
+                    .HasForeignKey<RouteSegment>(d => d.FromStopId)
                     .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("from_stop_id_fkey");
 

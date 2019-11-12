@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using DragonLoopModels;
 using DragonLoopAPI.Managers;
 using System;
+using System.Linq;
 
 namespace DragonLoopAPI.Controllers
 {
@@ -29,6 +30,11 @@ namespace DragonLoopAPI.Controllers
                 return NotFound();
             }
 
+            if (!stop.Route.Buses.Any())
+            {
+                return NoContent();
+            }
+
             return _stopManager.GetNextBus(stop);
         }
 
@@ -43,7 +49,11 @@ namespace DragonLoopAPI.Controllers
                 return NotFound();
             }
 
-            return _stopManager.GetNextExpectedTime(stop, time);           
+            var schedules = _context.Schedules.Where(s => s.Stop.StopId == stop.StopId)
+                                              .OrderBy(s => s.ExpectedTime)
+                                              .ToList();
+
+            return _stopManager.GetNextExpectedTime(schedules, time);           
         }
     }
 }
