@@ -4,12 +4,14 @@ using System.Threading.Tasks;
 
 namespace DragonLoopViewModels.Services
 {
-    public class RequestProvider
+    public static class RequestProvider
     {
-        public async Task<TResult> GetAsync<TResult>(string uri)
+        // Only one HttpClient is instantiated per application
+        private static readonly HttpClient HttpClient = new HttpClient();
+
+        public static async Task<TResult> GetAsync<TResult>(string uri)
         {
-            HttpClient httpClient = new HttpClient();
-            HttpResponseMessage response = await httpClient.GetAsync(uri);
+            HttpResponseMessage response = await HttpClient.GetAsync(uri);
 
             if (!response.IsSuccessStatusCode)
             {
