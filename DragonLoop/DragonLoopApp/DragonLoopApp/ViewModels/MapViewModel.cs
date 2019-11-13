@@ -16,10 +16,8 @@ namespace DragonLoopApp.ViewModels
         private bool IsBusy { get; set; }
 
         public ObservableCollection<Route> RoutesCollection { get; set; }
-        
-        public ObservableCollection<Bus> BusCollection { get; set; }
 
-        public Command LoadDataCommand { get; set; }
+        public Command LoadRoutesCommand { get; set; }
 
         public CustomMap Map { get; set; }
 
@@ -27,8 +25,7 @@ namespace DragonLoopApp.ViewModels
         {
             Title = "Map";
             RoutesCollection = new ObservableCollection<Route>();
-            BusCollection = new ObservableCollection<Bus>();
-            LoadDataCommand = new Command(async () => await ExecuteLoadDataCommand());
+            LoadRoutesCommand = new Command(async () => await ExecuteLoadRoutesCommand());
             Map = new CustomMap(
                 MapSpan.FromCenterAndRadius(
                     new Position(39.955615, -75.189490), Distance.FromMiles(0.5)))
@@ -37,28 +34,13 @@ namespace DragonLoopApp.ViewModels
                         };
         }
 
-        private async Task ExecuteLoadDataCommand()
+        private async Task ExecuteLoadRoutesCommand()
         {
             if (IsBusy)
                 return;
 
             IsBusy = true;
 
-            try
-            {
-                await ExecuteLoadRoutes();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-        private async Task ExecuteLoadRoutes()
-        {
             try
             {
                 RoutesCollection.Clear();
@@ -71,6 +53,64 @@ namespace DragonLoopApp.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        public async Task ToggleRoute(object sender, ToggledEventArgs e)
+        {
+            var route = ((sender as Xamarin.Forms.Switch).Parent.Parent as ViewCell).BindingContext as Route;
+
+            if (e.Value)
+            {
+                await LoadRouteObjects(route);
+            }
+            else
+            {
+                RemoveRouteObjects(route);
+            }
+
+            RenderMapOverlay();
+        }
+
+        private async Task LoadRouteObjects(Route route)
+        {
+            await LoadStops(route.RouteId);
+            await LoadBuses(route.RouteId);
+        }
+
+        private void RemoveRouteObjects(Route route)
+        {
+            RemoveStops(route.RouteId);
+            RemoveBuses(route.RouteId);
+        }
+
+        private void RenderMapOverlay()
+        {
+            Map.Pins.Clear();
+
+            foreach (var stop in Stops)
+            {
+                var pin = new Pin()
+                {
+                    Position = new Position(decimal.ToDouble(stop.XCoordinate), decimal.ToDouble(stop.YCoordinate)),
+                    Label = stop.Name
+                };
+                Map.Pins.Add(pin);
+            }
+
+            foreach (var bus in Buses)
+            {
+                var pin = new Pin
+                {
+                    Position = new Position(decimal.ToDouble(bus.XCoordinate), decimal.ToDouble(bus.YCoordinate)),
+                    Label = bus.BusId.ToString(),
+                    Type = PinType.Generic
+                };
+                Map.Pins.Add(pin);
             }
         }
     }

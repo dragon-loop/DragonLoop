@@ -17,8 +17,7 @@
                 ItemsSource="{Binding RoutesCollection}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
-                RefreshCommand="{Binding LoadRoutesCommand}"
-                IsPullToRefreshEnabled="true"
+                IsPullToRefreshEnabled="false"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement">
                 <ListView.ItemTemplate>
@@ -36,7 +35,7 @@
                                     Margin="10,0,0,0"/>
                                 <Switch x:Name="routeToggle"
                                     VerticalOptions="Center"
-                                    Toggled="Handle_Route_Toggle" />
+                                    Toggled="ToggleRoute" />
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

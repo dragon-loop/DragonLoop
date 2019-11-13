@@ -23,7 +23,13 @@ CREATE TABLE public.buses
     y_coordinate numeric NOT NULL,
     route_id integer NOT NULL,
     trip_id integer NOT NULL,
+    last_stop_id integer,
+    last_stop_time time without time zone,
     CONSTRAINT bus_pkey PRIMARY KEY (bus_id),
+    CONSTRAINT last_stop_id_fkey FOREIGN KEY (last_stop_id)
+        REFERENCES public.stops (stop_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
     CONSTRAINT route_id_fkey FOREIGN KEY (route_id)
         REFERENCES public.routes (route_id) MATCH SIMPLE
         ON UPDATE CASCADE

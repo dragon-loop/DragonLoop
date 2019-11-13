@@ -23,14 +23,8 @@ CREATE TABLE public.stops
     y_coordinate numeric NOT NULL,
     name text COLLATE pg_catalog."default" NOT NULL,
     route_id integer NOT NULL,
-    next_stop_id integer,
+    first_stop_flg boolean NOT NULL,
     CONSTRAINT stop_pkey PRIMARY KEY (stop_id),
-    CONSTRAINT next_stop_id_key UNIQUE (next_stop_id)
-,
-    CONSTRAINT next_stop_id_fkey FOREIGN KEY (next_stop_id)
-        REFERENCES public.stops (stop_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE SET NULL,
     CONSTRAINT route_id_fkey FOREIGN KEY (route_id)
         REFERENCES public.routes (route_id) MATCH SIMPLE
         ON UPDATE CASCADE

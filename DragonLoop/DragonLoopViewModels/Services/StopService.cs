@@ -1,36 +1,33 @@
 ﻿using DragonLoopModels;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DragonLoopViewModels.Services
 {
     public class StopService
     {
-        private static RequestProvider RequestProvider = new RequestProvider();
-
+        private const string UrlPath = "/api/stop";
         private readonly string UrlBase;
 
         public StopService(string urlBase)
             => UrlBase = urlBase;
 
-        public async Task<Stop> GetStopAsync(string id)
+        public async Task<Bus> GetNextBusAsync(int id)
         {
             UriBuilder builder = new UriBuilder(UrlBase);
-            builder.Path = $"/api/stop/{id}";
+            builder.Path = $"{UrlPath}/{id}/nextbus";
             string uri = builder.ToString();
 
-            return await RequestProvider.GetAsync<Stop>(uri);
+            return await RequestProvider.GetAsync<Bus>(uri);
         }
 
-        public async Task<IEnumerable<Stop>> GetStopsAsync(int? routeId = null)
+        public async Task<TimeSpan> GetNextExpectedTimeAsync(int id, TimeSpan time)
         {
             UriBuilder builder = new UriBuilder(UrlBase);
-            builder.Path = "/api/stop";
-            if (routeId != null) builder.Query = $"routeid={routeId}";
+            builder.Path = $"{UrlPath}/{id}/nextexpectedtime/{time}";
             string uri = builder.ToString();
 
-            return await RequestProvider.GetAsync<IEnumerable<Stop>>(uri);
+            return await RequestProvider.GetAsync<TimeSpan>(uri);
         }
     }
 }
