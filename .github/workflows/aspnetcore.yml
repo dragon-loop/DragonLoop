@@ -15,11 +15,9 @@ jobs:
         dotnet-version: 3.1.100-preview2-014569
     - name: Build with Dotnet
       run: |
-        cd DragonLoop
         dotnet build DragonLoopAPI
         dotnet build DragonLoopWeb
     - name: Unit Tests
       run: |
-        cd DragonLoop
         dotnet test DragonLoopAPI
         dotnet test DragonLoopWeb
