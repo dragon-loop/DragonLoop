@@ -6,6 +6,8 @@ using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using DragonLoopModels;
 using DragonLoopApp.Views;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DragonLoopApp.ViewModels
 {
@@ -80,17 +82,20 @@ namespace DragonLoopApp.ViewModels
         {
             await LoadStops(route.RouteId);
             await LoadBuses(route.RouteId);
+            await LoadRouteSegments(route.RouteId);
         }
 
         private void RemoveRouteObjects(Route route)
         {
             RemoveStops(route.RouteId);
             RemoveBuses(route.RouteId);
+            RemoveRouteSegments(route.RouteId);
         }
 
         private void RenderMapOverlay()
         {
             Map.Pins.Clear();
+            Map.MapElements.Clear();
 
             foreach (var stop in Stops)
             {
@@ -111,6 +116,23 @@ namespace DragonLoopApp.ViewModels
                     Type = PinType.Generic
                 };
                 Map.Pins.Add(pin);
+            }
+
+            foreach (var routeSegment in RouteSegments)
+            {
+                var startPosition = new Position(decimal.ToDouble(routeSegment.StartXCoordinate), decimal.ToDouble(routeSegment.StartYCoordinate));
+                var nextRouteSegment = RouteSegments.Where(r => r.RouteSegmentId == routeSegment.NextRouteSegmentId).First();
+                var endPosition = new Position(decimal.ToDouble(nextRouteSegment.StartXCoordinate), decimal.ToDouble(nextRouteSegment.StartYCoordinate));
+                var polyline = new Polyline
+                {
+                    StrokeColor = Color.Blue,
+                    StrokeWidth = 12,
+                    Geopath = {
+                        startPosition,
+                        endPosition
+                    }
+                };
+                Map.MapElements.Add(polyline);
             }
         }
     }

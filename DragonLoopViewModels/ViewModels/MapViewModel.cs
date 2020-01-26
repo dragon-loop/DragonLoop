@@ -14,7 +14,9 @@ namespace DragonLoopViewModels.ViewModels
 
         public IEnumerable<Bus> Buses { get; set; }
 
-        public IEnumerable<Stop> Stops { get; set; }       
+        public IEnumerable<Stop> Stops { get; set; }
+
+        public IEnumerable<RouteSegment> RouteSegments { get; set; }
 
         public MapViewModel(string urlBase)
         {
@@ -60,6 +62,26 @@ namespace DragonLoopViewModels.ViewModels
                 if (stop.RouteId != id)
                 {
                     yield return stop;
+                }
+            }
+        }
+
+        public async Task LoadRouteSegments(int id)
+        {
+            var routeSegments = await RouteService.GetRouteSegmentsAsync(id);
+            RouteSegments = (RouteSegments == null) ? routeSegments : routeSegments.Concat(routeSegments);
+        }
+
+        public void RemoveRouteSegments(int id)
+            => RouteSegments = GetRouteSegmentsExcept(id).ToList();
+
+        private IEnumerable<RouteSegment> GetRouteSegmentsExcept(int id)
+        {
+            foreach (RouteSegment routeSegment in RouteSegments)
+            {
+                if (routeSegment.RouteId != id)
+                {
+                    yield return routeSegment;
                 }
             }
         }
