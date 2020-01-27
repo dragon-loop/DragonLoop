@@ -3,7 +3,7 @@
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28" />
 	<application android:label="DragonLoopApp.Android" android:networkSecurityConfig="@xml/network_security_config">
 		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyATzYzxbdUUCKHFK831Ku-4sLN93Cq_utQ" />
-        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+		<uses-library android:name="org.apache.http.legacy" android:required="false" />
 	</application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
