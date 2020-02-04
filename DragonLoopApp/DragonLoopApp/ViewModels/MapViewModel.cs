@@ -7,6 +7,7 @@ using Xamarin.Forms.Maps;
 using DragonLoopModels;
 using System.Linq;
 using DragonLoopApp.Views.MapElements;
+using System.Collections.Generic;
 
 namespace DragonLoopApp.ViewModels
 {
@@ -98,17 +99,18 @@ namespace DragonLoopApp.ViewModels
 
             foreach (var stop in Stops)
             {
-                var pin = new Pin()
+                var pin = new CustomPin()
                 {
                     Position = new Position(decimal.ToDouble(stop.XCoordinate), decimal.ToDouble(stop.YCoordinate)),
-                    Label = stop.Name
+                    Label = stop.Name,
+                    Type = PinType.Place
                 };
                 Map.Pins.Add(pin);
             }
 
             foreach (var bus in Buses)
             {
-                var pin = new Pin
+                var pin = new CustomPin
                 {
                     Position = new Position(decimal.ToDouble(bus.XCoordinate), decimal.ToDouble(bus.YCoordinate)),
                     Label = bus.BusId.ToString(),
