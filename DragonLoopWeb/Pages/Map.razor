@@ -1,0 +1,44 @@
+﻿@page "/"
+@using DragonLoopViewModels.ViewModels
+@inject IJSRuntime JsRuntime;
+
+<h1>Maps View</h1>
+
+<div id="map" style="position:relative; width: 100%; height: 70vh;"></div>
+
+@if (mapViewModel.Routes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>RouteId</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var route in mapViewModel.Routes)
+            {
+                <tr>
+                    <td>@route.RouteId</td>
+                    <td>@route.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private MapViewModel mapViewModel = new MapViewModel(Settings.UrlBase);
+    private ElementReference map;
+
+    protected override async Task OnInitializedAsync()
+        => await mapViewModel.LoadRoutes();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+        => await JsRuntime.InvokeAsync<object>
+    ("jsFunctions.initMap");
+    }
