@@ -69,7 +69,7 @@ namespace DragonLoopViewModels.ViewModels
         public async Task LoadRouteSegments(int id)
         {
             var routeSegments = await RouteService.GetRouteSegmentsAsync(id);
-            RouteSegments = (RouteSegments == null) ? routeSegments : routeSegments.Concat(routeSegments);
+            RouteSegments = (RouteSegments == null) ? routeSegments : RouteSegments.Concat(routeSegments);
         }
 
         public void RemoveRouteSegments(int id)
