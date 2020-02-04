@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using Android.Content;
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
-using Android.Widget;
 using DragonLoopApp.Droid.CustomRenderer;
-using DragonLoopApp.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps.Android;
 using Xamarin.Forms.Maps;
+using DragonLoopApp.Views.MapElements;
 
 [assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
 namespace DragonLoopApp.Droid.CustomRenderer
