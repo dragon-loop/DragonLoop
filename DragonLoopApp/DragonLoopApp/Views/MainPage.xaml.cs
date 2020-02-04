@@ -33,8 +33,8 @@ namespace DragonLoopApp.Views
                     case (int)MenuItemType.Map:
                         MenuPages.Add(id, new NavigationPage(new MapPage()));
                         break;
-                    case (int)MenuItemType.About:
-                        MenuPages.Add(id, new NavigationPage(new AboutPage()));
+                    case (int)MenuItemType.NextToArrive:
+                        MenuPages.Add(id, new NavigationPage(new NextToArrive()));
                         break;
                     case (int)MenuItemType.Schedules:
                         MenuPages.Add(id, new NavigationPage(new SchedulesPage()));

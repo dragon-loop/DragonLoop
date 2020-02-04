@@ -8,7 +8,7 @@ namespace DragonLoopApp.Models
     {
         Map,
         Schedules,
-        About
+        NextToArrive
     }
     public class HomeMenuItem
     {
