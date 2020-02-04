@@ -1,6 +1,6 @@
 name: ASP .NET Core CI
 
-on: [push, pull_request]
+on: pull_request
 
 jobs:
   build:
@@ -12,8 +12,12 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.0.100
-    - name: Build with dotnet
-      run: dotnet build
+        dotnet-version: 3.1.100-preview2-014569
+    - name: Build with Dotnet
+      run: |
+        dotnet build DragonLoopAPI
+        dotnet build DragonLoopWeb
     - name: Unit Tests
-      run: dotnet test
+      run: |
+        dotnet test DragonLoopAPI
+        dotnet test DragonLoopWeb
