@@ -1,7 +1,10 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using DragonLoopAPI.Managers;
+using DragonLoopAPI.Models;
 using DragonLoopModels;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DragonLoopAPI.Controllers
 {
@@ -10,43 +13,46 @@ namespace DragonLoopAPI.Controllers
     public class BusController : ControllerBase
     {
         private readonly DragonLoopContext _context;
+        private readonly BusManager _busManager;
 
         public BusController(DragonLoopContext context)
         {
             _context = context;
+            _busManager = new BusManager(context);
         }
 
-        // PUT: api/Bus/5/UpdateBusLocation
-        /// <summary>
-        /// This method will update a bus's location given an ID. The request will be made as follows:
-        /// content-type: application/json
-        /// {
-        ///		XCoordinate : "1.00",
-        ///		YCoordinate : "1.00"
-        /// }
-        /// </summary>
-        [HttpPut("{id}/UpdateBusLocation")]
-        public async Task<IActionResult> PutBusLocation(int id, Bus newBusCoord)
+        // POST: api/Bus/5/UpdateBusLocation
+        [HttpPost("UpdateBusLocation")]
+        public async Task<IActionResult> PostBusLocation(BusInput input)
         {
-            var existingBus = await _context.Buses.FindAsync(id);
+            ValidateInput(input);
 
-            if (existingBus != null)
+            var buses = _context.Buses.Where(b => b.IMEI == input.IMEI.Value);
+
+            if (buses.Count() == 0)
             {
-                existingBus.XCoordinate = newBusCoord.XCoordinate;
-                existingBus.YCoordinate = newBusCoord.YCoordinate;
-
-                try
-                {
-                    await _context.SaveChangesAsync();
-
-                    return Ok();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    throw;
-                }
+                var bus = await _busManager.GetNewBus(input);
+                _context.Buses.Add(bus);
             }
-            return NoContent();
+            else if (buses.Count() == 1)
+            {
+                _busManager.UpdateExistingBus(buses.First(), input);
+            }
+            else
+            {
+                throw new ArgumentException($"Multiple buses were found with IMEI number '{input.IMEI}'! Neither were updated.");
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        private void ValidateInput(BusInput input)
+        {
+            if (input.XCoordinate == null || input.YCoordinate == null || input.RouteId == null || input.IMEI == null)
+            {
+                throw new ArgumentException("A Route ID and X and Y coordinates must be included in the body of the request.");
+            }
         }
     }
 }

@@ -38,6 +38,8 @@ namespace DragonLoopAPI
 
                 entity.Property(e => e.TripId).HasColumnName("trip_id");
 
+                entity.Property(e => e.IMEI).HasColumnName("imei");
+
                 entity.Property(e => e.XCoordinate)
                     .HasColumnName("x_coordinate")
                     .HasColumnType("numeric");

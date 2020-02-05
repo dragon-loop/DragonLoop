@@ -15,6 +15,8 @@ namespace DragonLoopModels
 
         public int TripId { get; set; }
 
+        public long IMEI { get; set; }
+
         public int? LastStopId { get; set; }
 
         public TimeSpan? LastStopTime { get; set; }
