@@ -15,7 +15,7 @@ services:
   dragonloopweb:
     image: docker.pkg.github.com/dragon-loop/dragonloop/dragonloopweb:latest
     ports:
-      - 8001:8000
+      - 8001:80
     deploy:
       replicas: 2
   nginx:
