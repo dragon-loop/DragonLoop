@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 
 namespace DragonLoopAPI
 {
@@ -23,10 +24,14 @@ namespace DragonLoopAPI
         {
             services.AddControllers()
                     .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-                             
 
+            string pg_con_string = Environment.GetEnvironmentVariable("PG_CONNECTION_STRING");
+            if (pg_con_string == "")
+            {
+                pg_con_string = Configuration.GetSection("PgConnectionString").Value;
+            }
             services.AddEntityFrameworkNpgsql()
-                    .AddDbContext<DragonLoopContext>(context => context.UseLazyLoadingProxies().UseNpgsql(Configuration.GetSection("PgConnectionString").Value));
+                    .AddDbContext<DragonLoopContext>(context => context.UseLazyLoadingProxies().UseNpgsql(pg_con_string));
 
             services.AddSwaggerGen(c =>
             {
