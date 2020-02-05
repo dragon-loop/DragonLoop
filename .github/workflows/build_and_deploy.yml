@@ -33,4 +33,4 @@ jobs:
         DOCKER_SSH_PRIVATE_KEY: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
         DOCKER_SSH_PUBLIC_KEY: ${{ secrets.DOCKER_SWARM_PUBLIC_KEY }}
       with:
-        args: docker stack deploy -c stack.yaml --with-registry-auth dragonloop
+        args: stack deploy -c stack.yaml --with-registry-auth dragonloop
