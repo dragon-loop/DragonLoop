@@ -1,4 +1,4 @@
-name: Deploy to staging
+name: Build images and redeploy
 
 on: 
   push:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
   
     steps:
-    - name: 'Checkout Github Action' 
+    - name: 'Checkout repo' 
       uses: actions/checkout@master
 
     - name: 'Docker login'
@@ -21,7 +21,16 @@ jobs:
         username: ${{ secrets.GITHUB_DOCKER_USERNAME }}
         password: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
 
-    - name: 'Docker Build'
+    - name: 'Build and push docker images'
       run: |
         docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
         docker-compose -f docker-compose.yml -f docker-compose.prod.yml push
+    
+    - name: 'Deploy to swarm'
+      uses: "sagebind/docker-swarm-deploy-action@master"
+      args: "stack deploy --compose-file stack.yaml --with-registry-auth dragonloop"
+      env:
+        DOCKER_REMOTE_HOST: "ssh://core@${{ secrets.DOCKER_SWARM_IP }}"
+        DOCKER_SSH_PRIVATE_KEY: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
+        DOCKER_SSH_PUBLIC_KEY: ${{ secrets.DOCKER_SWARM_PUBLIC_KEY }}
+      
