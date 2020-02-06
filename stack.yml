@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:12-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+  dragonloopapi:
+    image: docker.pkg.github.com/dragon-loop/dragonloop/dragonloopapi:latest
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      PG_CONNECTION_STRING: "User ID=admin;Host=db;Port=5432;Database=postgres;Password=postgres_admin;"
+    ports:
+      - 5001:80
+  dragonloopweb:
+    image: docker.pkg.github.com/dragon-loop/dragonloop/dragonloopweb:latest
+    ports:
+      - 8001:80
+    deploy:
+      replicas: 2
+  nginx:
+    image: docker.pkg.github.com/dragon-loop/dragonloop/nginx
+    ports:
+      - 80:80
+version: '3.7'
+volumes:
+  db-data:
+    driver: local
+
