@@ -9,7 +9,7 @@ services:
     image: docker.pkg.github.com/dragon-loop/dragonloop/dragonloopapi:latest
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      PG_CONNECTION_STRING: "User ID=admin;Host=db;Port=5432;Database=postgres;Password=postgres_admin;"
+      PG_CONNECTION_STRING: "User ID=admin;Host=db;Port=5432;Database=postgres;Password=$POSTGRES_PASSWORD;"
     ports:
       - 5001:80
   dragonloopweb:
