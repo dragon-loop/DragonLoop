@@ -29,11 +29,11 @@ jobs:
         docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
         docker-compose -f docker-compose.yml -f docker-compose.prod.yml push
     
-    - name: 'Deploy to swarm'
-      uses: "sagebind/docker-swarm-deploy-action@master"
-      env:
-        DOCKER_REMOTE_HOST: "ssh://core@${{ secrets.DOCKER_SWARM_IP }}"
-        DOCKER_SSH_PRIVATE_KEY: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
-        DOCKER_SSH_PUBLIC_KEY: ${{ secrets.DOCKER_SWARM_PUBLIC_KEY }}
-      with:
-        args: stack deploy -c stack.yml --with-registry-auth dragonloop
+    #- name: 'Deploy to swarm'
+    #  uses: "sagebind/docker-swarm-deploy-action@master"
+    #  env:
+    #    DOCKER_REMOTE_HOST: "ssh://core@${{ secrets.DOCKER_SWARM_IP }}"
+    #    DOCKER_SSH_PRIVATE_KEY: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
+    #    DOCKER_SSH_PUBLIC_KEY: ${{ secrets.DOCKER_SWARM_PUBLIC_KEY }}
+    #  with:
+    #    args: stack deploy -c stack.yml --with-registry-auth dragonloop
