@@ -58,4 +58,4 @@ jobs:
         script : |
           envsubst < /tmp/stack.yml > /tmp/stack.yml
           docker stack deploy -c /tmp/stack.yml --with-registry-auth --prune dragonloop
-          rm /tmp/stack.yml
+          #rm /tmp/stack.yml
