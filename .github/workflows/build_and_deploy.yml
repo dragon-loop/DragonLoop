@@ -28,12 +28,20 @@ jobs:
       run: |
         docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
         docker-compose -f docker-compose.yml -f docker-compose.prod.yml push
-    
-    #- name: 'Deploy to swarm'
-    #  uses: "sagebind/docker-swarm-deploy-action@master"
-    #  env:
-    #    DOCKER_REMOTE_HOST: "ssh://core@${{ secrets.DOCKER_SWARM_IP }}"
-    #    DOCKER_SSH_PRIVATE_KEY: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
-    #    DOCKER_SSH_PUBLIC_KEY: ${{ secrets.DOCKER_SWARM_PUBLIC_KEY }}
-    #  with:
-    #    args: stack deploy -c stack.yml --with-registry-auth dragonloop
+      
+    - name: 'Deploy to swarm'
+      uses: appleboy/ssh-action@master
+      env:
+        DOCKER_STACK_FILE: ${{ secrets.DOCKER_STACK_FILE }}
+      with:
+        host: ${{ secrets.DOCKER_SWARM_IP }}
+        username: ${{ DOCKER_SWARM_USERNAME }}
+        key: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
+        envs: DOCKER_STACK_FILE
+        script : |
+          tmpfile=$(mktemp /tmp/stack.XXXXXX.yml)
+          echo ${DOCKER_STACK_FILE} > ${tmpfile}
+          docker stack deploy -c ${tmpfile} --with-registry-auth --prune
+          rm ${tmpfile}
+
+        
