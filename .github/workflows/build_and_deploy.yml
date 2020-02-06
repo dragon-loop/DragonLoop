@@ -35,7 +35,7 @@ jobs:
         DOCKER_STACK_FILE: ${{ secrets.DOCKER_STACK_FILE }}
       with:
         host: ${{ secrets.DOCKER_SWARM_IP }}
-        username: ${{ DOCKER_SWARM_USERNAME }}
+        username: ${{ secrets.DOCKER_SWARM_USERNAME }}
         key: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
         envs: DOCKER_STACK_FILE
         script : |
