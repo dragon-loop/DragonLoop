@@ -26,7 +26,7 @@ namespace DragonLoopAPI
                     .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             string pg_con_string = Environment.GetEnvironmentVariable("PG_CONNECTION_STRING");
-            if (pg_con_string == "")
+            if (pg_con_string == null)
             {
                 pg_con_string = Configuration.GetSection("PgConnectionString").Value;
             }
