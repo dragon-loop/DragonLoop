@@ -64,7 +64,7 @@ namespace DragonLoopAPI.Managers
         /// </summary>
         /// <param name="bus">The bus to update</param>
         /// <param name="input">The input <see cref="BusInput"/> from the request</param>
-        public async void UpdateExistingBus(Bus bus, BusInput input)
+        public async Task UpdateExistingBus(Bus bus, BusInput input)
         {
             bus.XCoordinate = input.XCoordinate.Value;
             bus.YCoordinate = input.YCoordinate.Value;

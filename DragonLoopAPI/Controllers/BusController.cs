@@ -27,16 +27,16 @@ namespace DragonLoopAPI.Controllers
         {
             ValidateInput(input);
 
-            var buses = _context.Buses.Where(b => b.IMEI == input.IMEI.Value);
+            var buses = _context.Buses.Where(b => b.IMEI == input.IMEI.Value).ToList();
 
-            if (buses.Count() == 0)
+            if (buses.Count == 0)
             {
                 var bus = await _busManager.GetNewBus(input);
                 _context.Buses.Add(bus);
             }
-            else if (buses.Count() == 1)
+            else if (buses.Count == 1)
             {
-                _busManager.UpdateExistingBus(buses.First(), input);
+                await _busManager.UpdateExistingBus(buses[0], input);
             }
             else
             {
