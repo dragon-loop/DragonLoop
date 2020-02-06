@@ -41,7 +41,7 @@ jobs:
         script : |
           tmpfile=$(mktemp /tmp/stack.XXXXXX.yml)
           echo ${DOCKER_STACK_FILE} > ${tmpfile}
-          docker stack deploy -c ${tmpfile} --with-registry-auth --prune
+          docker stack deploy -c ${tmpfile} --with-registry-auth --prune dragonloop
           rm ${tmpfile}
 
         
