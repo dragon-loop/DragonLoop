@@ -1,5 +1,7 @@
 ﻿@page "/schedules"
 @using DragonLoopViewModels.ViewModels
+@using Microsoft.AspNetCore.Components;
+@inject NavigationManager MyNavigationManager
 
 <h1>Schedules</h1>
 
@@ -35,10 +37,11 @@ else
 }
 
 @code {
-    private ScheduleViewModel scheduleViewModel = new ScheduleViewModel(Settings.UrlBase);
+    private ScheduleViewModel scheduleViewModel;
 
     protected override async Task OnInitializedAsync()
     {
+        scheduleViewModel = new ScheduleViewModel(MyNavigationManager.BaseUri + "/api");
         await scheduleViewModel.LoadRoutes();
         await scheduleViewModel.SetSelectedRoute(scheduleViewModel.Routes.First());
     }

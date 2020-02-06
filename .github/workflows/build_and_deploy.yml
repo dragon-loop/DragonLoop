@@ -1,0 +1,39 @@
+name: Build images and redeploy
+
+on: 
+  push:
+    branches: 
+      - develop
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+  
+    steps:
+    - name: 'Checkout repo' 
+      uses: actions/checkout@master
+
+    - name: 'Docker login'
+      uses: azure/docker-login@v1
+      with:
+        login-server: docker.pkg.github.com/dragon-loop/dragonloop/
+        username: ${{ secrets.GITHUB_DOCKER_USERNAME }}
+        password: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
+
+    - name: 'Build and push docker images'
+      env:
+        COMPOSE_DOCKER_CLI_BUILD: 1
+        DOCKER_BUILDKIT: 1
+      run: |
+        docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
+        docker-compose -f docker-compose.yml -f docker-compose.prod.yml push
+    
+    - name: 'Deploy to swarm'
+      uses: "sagebind/docker-swarm-deploy-action@master"
+      env:
+        DOCKER_REMOTE_HOST: "ssh://core@${{ secrets.DOCKER_SWARM_IP }}"
+        DOCKER_SSH_PRIVATE_KEY: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
+        DOCKER_SSH_PUBLIC_KEY: ${{ secrets.DOCKER_SWARM_PUBLIC_KEY }}
+      with:
+        args: stack deploy -c stack.yml --with-registry-auth dragonloop
