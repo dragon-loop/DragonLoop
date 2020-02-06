@@ -6,10 +6,15 @@ on:
       - develop
       - master
 
+env:
+  HOST: ${{ secrets.DOCKER_SWARM_IP }}
+  USERNAME: ${{ secrets.DOCKER_SWARM_USERNAME }}
+  KEY: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-  
+
     steps:
     - name: 'Checkout repo' 
       uses: actions/checkout@master
@@ -20,28 +25,37 @@ jobs:
         login-server: docker.pkg.github.com/dragon-loop/dragonloop/
         username: ${{ secrets.GITHUB_DOCKER_USERNAME }}
         password: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
-
+  
     - name: 'Build and push docker images'
       env:
         COMPOSE_DOCKER_CLI_BUILD: 1
         DOCKER_BUILDKIT: 1
+        COMPOSE_FILES: -f docker-compose.yml -f docker-compose.prod.yml
       run: |
-        docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
-        docker-compose -f docker-compose.yml -f docker-compose.prod.yml push
+        #docker-compose ${COMPOSE_FILES} pull
+        docker-compose ${COMPOSE_FILES} build
+        docker-compose ${COMPOSE_FILES} push
       
-    - name: 'Deploy to swarm'
-      uses: appleboy/ssh-action@master
-      env:
-        DOCKER_STACK_FILE: ${{ secrets.DOCKER_STACK_FILE }}
+    - name: copy file via ssh password
+      uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.DOCKER_SWARM_IP }}
         username: ${{ secrets.DOCKER_SWARM_USERNAME }}
         key: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
-        envs: DOCKER_STACK_FILE
-        script : |
-          tmpfile=$(mktemp /tmp/stack.XXXXXX.yml)
-          echo ${DOCKER_STACK_FILE} > ${tmpfile}
-          docker stack deploy -c ${tmpfile} --with-registry-auth --prune dragonloop
-          rm ${tmpfile}
+        source: "stack.yml"
+        target: "/tmp/"
+        overwrite: true 
 
-        
+    - name: 'Deploy to swarm'
+      uses: appleboy/ssh-action@master
+      env:
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD}} 
+      with:
+        host: ${{ secrets.DOCKER_SWARM_IP }}
+        username: ${{ secrets.DOCKER_SWARM_USERNAME }}
+        key: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
+        envs: POSTGRES_PASSWORD
+        script : |
+          envsubst < /tmp/stack.yml > /tmp/stack.yml
+          docker stack deploy -c /tmp/stack.yml --with-registry-auth --prune dragonloop
+          rm /tmp/stack.yml
