@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using DragonLoopViewModels.ViewModels
-@inject IJSRuntime JsRuntime;
+@using DragonLoopModels
+@inject IJSRuntime JSRuntime;
 @using Microsoft.AspNetCore.Components;
 @inject NavigationManager MyNavigationManager
 
@@ -27,6 +28,12 @@ else
                 <tr>
                     <td>@route.RouteId</td>
                     <td>@route.Name</td>
+                    <td>
+                        <label class="switch">
+                            <input type="checkbox" @onchange="eventArgs => { ToggleRoute(route, eventArgs.Value); }" />
+                            <span class="slider round"></span>
+                        </label>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -34,16 +41,45 @@ else
 }
 
 @code {
+    private object Route { get; set; }
     private MapViewModel mapViewModel;
     private ElementReference map;
 
     protected override async Task OnInitializedAsync()
     {
-            mapViewModel = new MapViewModel(MyNavigationManager.BaseUri + "/api");
-            await mapViewModel.LoadRoutes();
+        mapViewModel = new MapViewModel(MyNavigationManager.BaseUri + "/api");
+        await mapViewModel.LoadRoutes();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
-        => await JsRuntime.InvokeAsync<object>
+        => await JSRuntime.InvokeAsync<object>
     ("jsFunctions.initMap");
+
+    private async Task LoadRouteObjects(Route route)
+    {
+        await mapViewModel.LoadStops(route.RouteId);
     }
+
+    private void RemoveRouteObjects(Route route)
+    {
+        mapViewModel.RemoveStops(route.RouteId);
+    }
+
+    protected async void ToggleRoute(object Route, object toggle)
+    {
+        var route = Route as Route;
+
+        if ((bool)toggle)
+        {
+            await LoadRouteObjects(route);
+        }
+        else
+        {
+            RemoveRouteObjects(route);
+        }
+        foreach (var stop in mapViewModel.Stops)
+        {
+            await JSRuntime.InvokeAsync<object>("jsFunctions.setMarker", decimal.ToDouble(stop.XCoordinate), decimal.ToDouble(stop.YCoordinate), stop.Name);
+        }
+    }
+}
