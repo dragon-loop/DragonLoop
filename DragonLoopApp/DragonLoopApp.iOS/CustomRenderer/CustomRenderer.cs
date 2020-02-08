@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CoreGraphics;
 using DragonLoopApp.iOS.CustomRenderer;
-using DragonLoopApp.Views;
-using Foundation;
+using DragonLoopApp.Views.MapElements;
 using MapKit;
 using UIKit;
 using Xamarin.Forms;
