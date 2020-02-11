@@ -3,7 +3,6 @@ name: Build images and redeploy
 on: 
   push:
     branches: 
-      - develop
       - master
 
 env:
