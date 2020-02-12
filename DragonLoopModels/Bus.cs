@@ -17,6 +17,8 @@ namespace DragonLoopModels
 
         public long IMEI { get; set; }
 
+        public bool InactiveFlag { get; set; }
+
         public int? LastStopId { get; set; }
 
         public TimeSpan? LastStopTime { get; set; }
