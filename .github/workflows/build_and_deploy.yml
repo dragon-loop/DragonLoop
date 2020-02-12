@@ -1,9 +1,6 @@
 name: Build images and redeploy
 
-on: 
-  push:
-    branches: 
-      - master
+on: release
 
 env:
   HOST: ${{ secrets.DOCKER_SWARM_IP }}
@@ -29,12 +26,23 @@ jobs:
       env:
         COMPOSE_DOCKER_CLI_BUILD: 1
         DOCKER_BUILDKIT: 1
-        COMPOSE_FILES: -f docker-compose.yml -f docker-compose.prod.yml
+        COMPOSE_FILES: -f docker-compose.yml
       run: |
-        #docker-compose ${COMPOSE_FILES} pull
+        export DOCKER_TARGET=publish
+        export TAG=build
+        docker-compose ${COMPOSE_FILES} pull
         docker-compose ${COMPOSE_FILES} build
         docker-compose ${COMPOSE_FILES} push
-      
+        
+        export DOCKER_TARGET=final
+        export TAG=$(echo $GITHUB_REF | sed -e 's/refs\/tags\///g')
+        docker-compose ${COMPOSE_FILES} pull
+        docker-compose ${COMPOSE_FILES} build
+        docker-compose ${COMPOSE_FILES} push
+        
+        export TAG=latest
+        docker-compose ${COMPOSE_FILES} build
+        docker-compose ${COMPOSE_FILES} push
     - name: copy file via ssh password
       uses: appleboy/scp-action@master
       with:
