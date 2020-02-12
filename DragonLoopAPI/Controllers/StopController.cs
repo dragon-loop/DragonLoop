@@ -30,7 +30,7 @@ namespace DragonLoopAPI.Controllers
                 return NotFound();
             }
 
-            if (!stop.Route.Buses.Where(b => b.InactiveFlag == false).Where(b => b.LastStop != null).Any())
+            if (!stop.Route.Buses.Where(b => b.InactiveFlag == false && b.LastStop != null).Any())
             {
                 return NoContent();
             }
