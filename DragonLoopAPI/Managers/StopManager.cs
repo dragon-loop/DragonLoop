@@ -35,11 +35,12 @@ namespace DragonLoopAPI.Managers
         /// <returns>If a bus was most recently at the given stop</returns>
         private bool TryGetBusAtStop(Stop stop, out Bus bus)
         {
-            if (stop.Buses.Any())
+            var buses = stop.Buses.Where(b => b.InactiveFlag == false);
+            if (buses.Any())
             {
                 (Bus bus, TimeSpan time) firstBus = (null, TimeSpan.MaxValue);
 
-                foreach (Bus b in stop.Buses)
+                foreach (Bus b in buses)
                 {
                     if (b.LastStopTime < firstBus.time)
                     {

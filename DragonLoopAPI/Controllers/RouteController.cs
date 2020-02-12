@@ -36,7 +36,7 @@ namespace DragonLoopAPI.Controllers
                 return NotFound();
             }
 
-            return route.Buses.ToList();
+            return route.Buses.Where(b => b.InactiveFlag == false).ToList();
         }
 
         // GET: api/Route/5/Stops

@@ -40,6 +40,8 @@ namespace DragonLoopAPI
 
                 entity.Property(e => e.IMEI).HasColumnName("imei");
 
+                entity.Property(e => e.InactiveFlag).HasColumnName("inactive_flag");
+
                 entity.Property(e => e.XCoordinate)
                     .HasColumnName("x_coordinate")
                     .HasColumnType("numeric");
