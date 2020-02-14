@@ -105,6 +105,7 @@ namespace DragonLoopApp.ViewModels
                     Label = stop.Name,
                     Type = PinType.Place
                 };
+                Map.CustomPins.Add(pin);
                 Map.Pins.Add(pin);
             }
 
@@ -116,6 +117,7 @@ namespace DragonLoopApp.ViewModels
                     Label = bus.BusId.ToString(),
                     Type = PinType.Generic
                 };
+                Map.CustomPins.Add(pin);
                 Map.Pins.Add(pin);
             }
 

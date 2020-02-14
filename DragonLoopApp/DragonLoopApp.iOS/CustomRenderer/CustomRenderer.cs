@@ -16,7 +16,7 @@ namespace DragonLoopApp.iOS.CustomRenderer
     public class CustomMapRenderer : MapRenderer
     {
         UIView customPinView;
-        List<CustomPin> customPins;
+        List<CustomPin> customPins = new List<CustomPin>();
 
         protected override void OnElementChanged(ElementChangedEventArgs<View> e)
         {
@@ -35,7 +35,7 @@ namespace DragonLoopApp.iOS.CustomRenderer
             {
                 var formsMap = (CustomMap)e.NewElement;
                 var nativeMap = Control as MKMapView;
-                customPins = formsMap.CustomPins;
+                customPins = formsMap.CustomPins ?? customPins;
 
                 nativeMap.GetViewForAnnotation = GetViewForAnnotation;
                 nativeMap.CalloutAccessoryControlTapped += OnCalloutAccessoryControlTapped;
