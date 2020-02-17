@@ -14,5 +14,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)RouteSegment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Schedule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Stop.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BusHistory.cs" />
   </ItemGroup>
 </Project>

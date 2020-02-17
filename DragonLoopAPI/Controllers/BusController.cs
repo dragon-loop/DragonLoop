@@ -14,11 +14,13 @@ namespace DragonLoopAPI.Controllers
     {
         private readonly DragonLoopContext _context;
         private readonly BusManager _busManager;
+        private readonly BusHistoryManager _busHistoryManager;
 
         public BusController(DragonLoopContext context)
         {
             _context = context;
             _busManager = new BusManager(context);
+            _busHistoryManager = new BusHistoryManager(context);
         }
 
         // POST: api/Bus/UpdateBusLocation
@@ -37,6 +39,7 @@ namespace DragonLoopAPI.Controllers
             else if (buses.Count == 1)
             {
                 await _busManager.UpdateExistingBus(buses[0], input);
+                await _busHistoryManager.AddHistory(buses[0]);
             }
             else
             {
