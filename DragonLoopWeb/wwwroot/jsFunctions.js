@@ -15,6 +15,7 @@
             position: { lat: posX, lng: postY },
             map: map,
             animation: google.maps.Animation.DROP,
+            icon: '/stop.png',
             title: name
         });
 
@@ -25,6 +26,20 @@
                 marker.setAnimation(google.maps.Animation.BOUNCE);
             }
         });
+    },
+    setRouteSegments: function (startX, startY, endX, endY, color) {
+        var routeCoordinates = [
+            { lat: startX, lng: startY },
+            { lat: endX, lng: endY }
+        ];
+        var routePath = new google.maps.Polyline({
+            path: routeCoordinates,
+            geodesic: true,
+            strokeColor: color,
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
 
+        routePath.setMap(map);
     }
 }
