@@ -1,14 +1,8 @@
 name: Build images and redeploy
 
-on: 
-  push:
-    branches: 
-      - master
-
-env:
-  HOST: ${{ secrets.DOCKER_SWARM_IP }}
-  USERNAME: ${{ secrets.DOCKER_SWARM_USERNAME }}
-  KEY: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
+on:
+  release:
+    types: [published]
 
 jobs:
   deploy:
@@ -25,16 +19,35 @@ jobs:
         username: ${{ secrets.GITHUB_DOCKER_USERNAME }}
         password: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
   
+    - name: Get Tag
+      id: tag
+      run: |
+        echo $GITHUB_REF
+        echo ${GITHUB_REF/refs\/tags\//}
+        echo ::set-output name=tag::${GITHUB_REF/refs\/tags\//}
+
     - name: 'Build and push docker images'
       env:
         COMPOSE_DOCKER_CLI_BUILD: 1
         DOCKER_BUILDKIT: 1
-        COMPOSE_FILES: -f docker-compose.yml -f docker-compose.prod.yml
       run: |
-        #docker-compose ${COMPOSE_FILES} pull
-        docker-compose ${COMPOSE_FILES} build
-        docker-compose ${COMPOSE_FILES} push
-      
+        export DOCKER_TARGET=publish
+        export TAG=build
+        docker-compose pull
+        docker-compose build
+        docker-compose push
+
+        export DOCKER_TARGET=final
+
+        export TAG=latest
+        docker-compose pull
+        docker-compose build
+        docker-compose push
+
+        export TAG=${{ steps.tag.outputs.tag }}
+        docker-compose build
+        docker-compose push
+
     - name: copy file via ssh password
       uses: appleboy/scp-action@master
       with:
@@ -43,19 +56,19 @@ jobs:
         key: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
         source: "stack.yml"
         target: "/tmp/"
-        overwrite: true 
+        overwrite: true
 
     - name: 'Deploy to swarm'
       uses: appleboy/ssh-action@master
       env:
         POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD}} 
+        TAG: ${{ steps.tag.outputs.tag }}
       with:
         host: ${{ secrets.DOCKER_SWARM_IP }}
         username: ${{ secrets.DOCKER_SWARM_USERNAME }}
         key: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
-        envs: POSTGRES_PASSWORD
+        envs: POSTGRES_PASSWORD, TAG
         script : |
           export POSTGRES_PASSWORD=$POSTGRES_PASSWORD
-          envsubst < /tmp/stack.yml > /tmp/env-stack.yml
-          docker stack deploy -c /tmp/env-stack.yml --with-registry-auth --prune dragonloop
-          #rm /tmp/stack.yml
+          export TAG=$TAG
+          docker stack deploy -c /tmp/stack.yml --with-registry-auth --prune dragonloop
