@@ -34,7 +34,7 @@ namespace DragonLoopAPI.Managers
                 RouteId = input.RouteId.Value,
                 TripId = nextSchedule.TripId,
                 IMEI = input.IMEI.Value,
-                InactiveFlag = false
+                InactiveFlag = input.RouteId.Value == 0 ? true : false
             };
         }
 
@@ -70,7 +70,7 @@ namespace DragonLoopAPI.Managers
             bus.XCoordinate = input.XCoordinate.Value;
             bus.YCoordinate = input.YCoordinate.Value;
             bus.RouteId = input.RouteId.Value;
-            bus.InactiveFlag = false;
+            bus.InactiveFlag = input.RouteId.Value == 0 ? true : false;
 
             var route = await _context.Routes.FindAsync(input.RouteId);
             var closestStop = GetClosestStop(bus, route);

@@ -29,5 +29,14 @@ namespace DragonLoopViewModels.Services
 
             return await RequestProvider.GetAsync<TimeSpan>(uri);
         }
+
+        public async Task<TimeSpan> GetExpectedTimeAsync(int stopId, int tripId)
+        {
+            UriBuilder builder = new UriBuilder(UrlBase);
+            builder.Path = $"{UrlPath}/{stopId}/expectedtime/{tripId}";
+            string uri = builder.ToString();
+
+            return await RequestProvider.GetAsync<TimeSpan>(uri);
+        }
     }
 }

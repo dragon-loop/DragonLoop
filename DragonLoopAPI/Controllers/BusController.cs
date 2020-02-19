@@ -47,30 +47,6 @@ namespace DragonLoopAPI.Controllers
             return Ok();
         }
 
-
-        // POST: api/Bus/DeactivateBus/{imei}
-        [HttpPost("DeactivateBus/{imei}")]
-        public async Task<IActionResult> DeactivateBus(long imei)
-        {
-            var buses = _context.Buses.Where(b => b.IMEI == imei).ToList();
-
-            if (buses.Count < 1)
-            {
-                throw new ArgumentException($"No buses were found with IMEI number '{imei}'!");
-            }
-            else if (buses.Count > 1)
-            {
-                throw new ArgumentException($"Multiple buses were found with IMEI number '{imei}'! None were updated.");
-            }
-            else
-            {
-                buses[0].InactiveFlag = true;
-            }           
-
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
-
         private void ValidateInput(BusInput input)
         {
             if (input.XCoordinate == null || input.YCoordinate == null || input.RouteId == null || input.IMEI == null)
