@@ -1,6 +1,8 @@
 name: Build images and redeploy
 
-on: [release]
+on:
+  release:
+    types: [published]
 
 jobs:
   deploy:
