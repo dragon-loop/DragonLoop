@@ -24,8 +24,8 @@ jobs:
       id: tag
       run: |
         echo $GITHUB_REF
-        echo $GITHUB_REF | sed -e 's/refs\/tags\///g' | echo
-        echo "##[set-output name=tag;]$(echo $GITHUB_REF | sed -e 's/refs\/tags\///g')"
+        echo ${GITHUB_REF/refs\/tags\//}
+        echo ::set-output name=tag::${GITHUB_REF/refs\/tags\//}
 
     - name: 'Build and push docker images'
       env:
