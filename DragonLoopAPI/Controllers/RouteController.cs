@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DragonLoopModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using DragonLoopAPI.Models;
+using DragonLoopAPI.Managers;
+
 
 namespace DragonLoopAPI.Controllers
 {
@@ -12,10 +16,12 @@ namespace DragonLoopAPI.Controllers
     public class RouteController : ControllerBase
     {
         private readonly DragonLoopContext _context;
+        private readonly RouteManager _scheduleManager;
 
         public RouteController(DragonLoopContext context)
         {
             _context = context;
+            _scheduleManager = new RouteManager(context);
         }
 
         // GET: api/Route
@@ -79,6 +85,31 @@ namespace DragonLoopAPI.Controllers
             }
 
             return route.RouteSegments.ToList();
+        }
+
+        // POST: api/Route/5/UpdateRouteSchedule
+        [HttpPost("{id}/UpdateRouteSchedule")]
+        public async Task<IActionResult> PostSchedule(int id, ScheduleInput[] input)
+        {
+            var truncated = await _scheduleManager.TruncateRouteSchedule(id);
+            if (!truncated)
+            {
+                return NotFound();
+            }
+            Console.WriteLine(truncated);
+            var schedules = input.Select(async s =>
+            {
+                Schedule schedule = await _scheduleManager.GetNewSchedule(s, id);
+                Console.WriteLine(schedule);
+                return schedule;
+            }).Select(t =>
+            {
+                return t.Result;
+            }).ToList();
+            await _scheduleManager.SetRouteSchedules(id, schedules);
+            await _context.SaveChangesAsync();
+
+            return Ok(id);
         }
     }
 }
