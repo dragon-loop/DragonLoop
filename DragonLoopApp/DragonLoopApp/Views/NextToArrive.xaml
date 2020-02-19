@@ -4,12 +4,23 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="DragonLoopApp.Views.NextToArrive">
+             x:Class="DragonLoopApp.Views.NextToArrive"
+             Title="{Binding Title}">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Picker x:Name="SelectRoute"
+                        TitleColor="Black"
+                        ItemsSource="{Binding RoutesCollection}"
+                        SelectedItem="{Binding SelectedRoute}"
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedIndexChanged="SelectRouteIndexChanged" />
+            <Picker x:Name="SelectStop"
+                        TitleColor="Black"
+                        ItemsSource="{Binding StopsCollection}"
+                        SelectedItem="{Binding SelectedStop}"
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedIndexChanged="SelectStopIndexChanged" />
+            <Label x:Name="NextToArriveLabel"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
