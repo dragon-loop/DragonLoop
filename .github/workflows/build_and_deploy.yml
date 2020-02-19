@@ -29,7 +29,6 @@ jobs:
       env:
         COMPOSE_DOCKER_CLI_BUILD: 1
         DOCKER_BUILDKIT: 1
-        COMPOSE_FILES: -f docker-compose.yml
       run: |
         export DOCKER_TARGET=publish
         export TAG=build
@@ -44,7 +43,7 @@ jobs:
         docker-compose build
         docker-compose push
 
-        export TAG=${{ steps.tag.tag }}
+        export TAG=${{ steps.tag.outputs.tag }}
         docker-compose build
         docker-compose push
 
@@ -63,7 +62,7 @@ jobs:
       uses: appleboy/ssh-action@master
       env:
         POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD}} 
-        TAG: ${{ steps.tag.tag }}
+        TAG: ${{ steps.tag.outputs.tag }}
       with:
         host: ${{ secrets.DOCKER_SWARM_IP }}
         username: ${{ secrets.DOCKER_SWARM_USERNAME }}
