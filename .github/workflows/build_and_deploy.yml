@@ -1,9 +1,6 @@
 name: Build images and redeploy
 
-on: 
-  push:
-    branches: 
-      - ci_improvements
+on: [release]
 
 jobs:
   deploy:
