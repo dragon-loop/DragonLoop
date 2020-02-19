@@ -21,12 +21,9 @@ jobs:
         password: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
   
     - name: Get Tag
-      outputs:
-        tag:
-          description: Current release tag
       id: tag
       run: |
-        echo "::set-output name=version::$(echo $GITHUB_REF | sed -e 's/refs\/tags\///g')"
+        echo "##[set-output name=tag;]$(echo $GITHUB_REF | sed -e 's/refs\/tags\///g')"
 
     - name: 'Build and push docker images'
       env:
@@ -47,7 +44,7 @@ jobs:
         docker-compose build
         docker-compose push
 
-        export TAG=${{ steps.tag.version }}
+        export TAG=${{ steps.tag.tag }}
         docker-compose build
         docker-compose push
 
@@ -66,7 +63,7 @@ jobs:
       uses: appleboy/ssh-action@master
       env:
         POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD}} 
-        TAG: ${{ steps.tag.version }}
+        TAG: ${{ steps.tag.tag }}
       with:
         host: ${{ secrets.DOCKER_SWARM_IP }}
         username: ${{ secrets.DOCKER_SWARM_USERNAME }}
