@@ -1,6 +1,9 @@
 name: Build images and redeploy
 
-on: release
+on: 
+  push:
+    branches: 
+      - ci_improvements
 
 env:
   HOST: ${{ secrets.DOCKER_SWARM_IP }}
