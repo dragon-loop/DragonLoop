@@ -16,11 +16,11 @@ docker:
   - docker-compose*
   - stack.yml
   - .dockerignore
-  - **/Dockerfile
+  - "**/Dockerfile"
 nginx:
   - nginx/**/*
 meta:
-  - **/.gitignore
+  - "**/.gitignore"
   - .editorconfig
   - README.md
 actions:
