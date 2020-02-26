@@ -55,5 +55,26 @@ namespace DragonLoopAPI.Controllers
 
             return _stopManager.GetNextExpectedTime(schedules, time);           
         }
+
+        // GET: api/Stop/5/ExpectedTime/5
+        [HttpGet("{stopId}/ExpectedTime/{tripId}")]
+        public async Task<ActionResult<TimeSpan>> GetExpectedTime(int stopId, int tripId)
+        {
+            var stop = await _context.Stops.FindAsync(stopId);
+
+            if (stop == null)
+            {
+                return NotFound();
+            }
+
+            var schedule = await _context.Schedules.FindAsync(stop.RouteId, tripId, stopId);
+
+            if (schedule == null)
+            {
+                return NotFound();
+            }
+
+            return schedule.ExpectedTime;
+        }
     }
 }

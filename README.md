@@ -1,5 +1,7 @@
 # Dragon Loop
 
+![ASP .NET Core CI](https://github.com/dragon-loop/DragonLoop/workflows/ASP%20.NET%20Core%20CI/badge.svg)
+![Build images and redeploy](https://github.com/dragon-loop/DragonLoop/workflows/Build%20images%20and%20redeploy/badge.svg)
 ## Setup
 1. Download [Postgres](https://www.postgresql.org/)
 2. Clone this repo to your local machine

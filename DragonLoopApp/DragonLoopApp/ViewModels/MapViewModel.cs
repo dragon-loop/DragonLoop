@@ -7,7 +7,6 @@ using Xamarin.Forms.Maps;
 using DragonLoopModels;
 using System.Linq;
 using DragonLoopApp.Views.MapElements;
-using System.Collections.Generic;
 
 namespace DragonLoopApp.ViewModels
 {

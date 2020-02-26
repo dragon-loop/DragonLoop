@@ -1,0 +1,27 @@
+Mobile:
+  - DragonLoopApp/**/*
+Android:
+  - DragonLoopApp/DragonLoopApp.Android/**/*
+iOS:
+  - DragonLoopApp/DragonLoopApp.iOS/**/*
+API:
+  - DragonLoopAPI/**/*
+Models:
+  - DragonLoopModels/**/*
+Web:
+  - DragonLoopWeb/**/*
+ViewModels:
+  - DragonLoopViewModels/**/*
+docker:
+  - docker-compose*
+  - stack.yml
+  - .dockerignore
+  - "**/Dockerfile"
+nginx:
+  - nginx/**/*
+meta:
+  - "**/.gitignore"
+  - .editorconfig
+  - README.md
+actions:
+  - .github/**/*

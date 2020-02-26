@@ -2,7 +2,9 @@
 using DragonLoopAPI.Models;
 using DragonLoopModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,6 +21,13 @@ namespace DragonLoopAPI.Controllers
         {
             _context = context;
             _busManager = new BusManager(context);
+        }
+
+        // GET: api/Bus
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Bus>>> GetBuses()
+        {
+            return await _context.Buses.ToListAsync();
         }
 
         // POST: api/Bus/UpdateBusLocation
@@ -42,30 +51,6 @@ namespace DragonLoopAPI.Controllers
             {
                 throw new ArgumentException($"Multiple buses were found with IMEI number '{input.IMEI}'! None were updated.");
             }
-
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
-
-
-        // POST: api/Bus/DeactivateBus/{imei}
-        [HttpPost("DeactivateBus/{imei}")]
-        public async Task<IActionResult> DeactivateBus(long imei)
-        {
-            var buses = _context.Buses.Where(b => b.IMEI == imei).ToList();
-
-            if (buses.Count < 1)
-            {
-                throw new ArgumentException($"No buses were found with IMEI number '{imei}'!");
-            }
-            else if (buses.Count > 1)
-            {
-                throw new ArgumentException($"Multiple buses were found with IMEI number '{imei}'! None were updated.");
-            }
-            else
-            {
-                buses[0].InactiveFlag = true;
-            }           
 
             await _context.SaveChangesAsync();
             return Ok();
