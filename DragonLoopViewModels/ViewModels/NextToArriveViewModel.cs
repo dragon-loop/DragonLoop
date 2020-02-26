@@ -22,33 +22,15 @@ namespace DragonLoopViewModels.ViewModels
 
         public IEnumerable<Stop> Stops { get; set; }
 
-        private Route selectedRoute;
-        public Route SelectedRoute
-        {
-            get { return selectedRoute; }
-            private set
-            {
-                selectedRoute = value;
-                OnPropertyChanged();
-            }
-        }
+        public Route SelectedRoute;
 
-        private Stop selectedStop;
-        public Stop SelectedStop
-        {
-            get { return selectedStop; }
-            private set
-            {
-                selectedStop = value;
-                OnPropertyChanged();
-            }
-        }
+        public Stop SelectedStop;
 
         public Bus NextBus { get; set; }
 
-        public TimeSpan NextBusLateness { get; set; }
+        public int NextBusLateness { get; set; }
 
-        public TimeSpan NextExpectedTime { get; set; }
+        public string NextExpectedTime { get; set; }
 
         public NextToArriveViewModel(string urlBase)
         {
@@ -71,14 +53,11 @@ namespace DragonLoopViewModels.ViewModels
             NextBus = await StopService.GetNextBusAsync(stop.StopId);
 
             var expectedTime = await StopService.GetExpectedTimeAsync(NextBus.LastStopId.Value, NextBus.TripId);
-            NextBusLateness = expectedTime - NextBus.LastStopTime.Value;
+            NextBusLateness = Convert.ToInt32((expectedTime - NextBus.LastStopTime.Value).TotalMinutes);
 
-            NextExpectedTime = await StopService.GetNextExpectedTimeAsync(stop.StopId, DateTime.Now.TimeOfDay);
-        }
-
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            var nextExpectedTime = await StopService.GetNextExpectedTimeAsync(stop.StopId, DateTime.Now.TimeOfDay);
+            var dateTime = new DateTime(nextExpectedTime.Ticks);
+            NextExpectedTime = dateTime.ToString("h:mm tt");
         }
     }
 }
