@@ -41,7 +41,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        scheduleViewModel = new ScheduleViewModel("api." + MyNavigationManager.BaseUri + "/api");
+        scheduleViewModel = new ScheduleViewModel(MyNavigationManager.BaseUri + "/api");
         await scheduleViewModel.LoadRoutes();
         await scheduleViewModel.SetSelectedRoute(scheduleViewModel.Routes.First());
     }
