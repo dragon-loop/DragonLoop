@@ -19,3 +19,7 @@ services:
       target: ${DOCKER_TARGET}
       context: .
       dockerfile: DragonLoopWeb/Dockerfile
+
+  nginx:
+    build:
+      context: ./nginx
