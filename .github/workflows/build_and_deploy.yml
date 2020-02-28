@@ -70,4 +70,4 @@ jobs:
           export POSTGRES_PASSWORD=$POSTGRES_PASSWORD
           export TAG=$TAG
           cd /tmp
-          docker stack deploy -c docker-compose.yml-c stack.yml --with-registry-auth --prune dragonloop
+          docker stack deploy -c docker-compose.yml -c stack.yml --with-registry-auth --prune dragonloop
