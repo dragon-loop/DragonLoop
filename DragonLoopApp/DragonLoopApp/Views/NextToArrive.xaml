@@ -20,7 +20,10 @@
                         SelectedItem="{Binding SelectedStop}"
                         ItemDisplayBinding="{Binding Name}"
                         SelectedIndexChanged="SelectStopIndexChanged" />
-            <Label x:Name="NextToArriveLabel"/>
+            <Label x:Name="NextToArriveLabel"
+                   TextType="Html"
+                   HorizontalTextAlignment="Center"
+                   FontSize="Large"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

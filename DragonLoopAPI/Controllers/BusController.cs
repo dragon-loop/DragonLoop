@@ -2,7 +2,9 @@
 using DragonLoopAPI.Models;
 using DragonLoopModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,6 +21,13 @@ namespace DragonLoopAPI.Controllers
         {
             _context = context;
             _busManager = new BusManager(context);
+        }
+
+        // GET: api/Bus
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Bus>>> GetBuses()
+        {
+            return await _context.Buses.ToListAsync();
         }
 
         // POST: api/Bus/UpdateBusLocation

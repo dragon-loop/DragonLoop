@@ -3,12 +3,11 @@ version: "3.7"
 services:
   dragonloopapi:
     image: docker.pkg.github.com/dragon-loop/dragonloop/dragonloopapi:${TAG}
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      PG_CONNECTION_STRING: "User ID=admin;Host=db;Port=5432;Database=postgres;Password=${POSTGRES_PASSWORD};"
     ports:
       - 5000:80
-    build:
-      target: ${DOCKER_TARGET}
-      context: .
-      dockerfile: DragonLoopAPI/Dockerfile
     depends_on:
       - db
 
@@ -16,15 +15,11 @@ services:
     image: docker.pkg.github.com/dragon-loop/dragonloop/dragonloopweb:${TAG}
     ports:
       - 8000:80
-    build:
-      target: ${DOCKER_TARGET}
-      context: .
-      dockerfile: DragonLoopWeb/Dockerfile
 
   db:
     image: postgres:12-alpine
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
       - db-data:/var/lib/postgresql/data
 

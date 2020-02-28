@@ -73,7 +73,25 @@ namespace DragonLoopApp.ViewModels
             var stop = (sender as Picker).SelectedItem as Stop;
             await SetSelectedStop(stop);
 
-            NextToArriveLabel.Text = $"The next bus to arrive is {NextBus.BusId}. It is running {NextBusLateness} minutes late. The next bus to arrive is supposed to arrive at {NextExpectedTime}";
+            if (NextBusLateness < 0)
+            {
+                NextToArriveLabel.TextColor = Color.Green;
+                NextToArriveLabel.Text = $"<b>Scheduled Arrival: {NextExpectedTime}</b><br />" +
+                                         $"{Math.Abs(NextBusLateness)}m early - Bus #{NextBus.BusId}";
+            }
+            else if (NextBusLateness > 0)
+            {
+                NextToArriveLabel.TextColor = Color.Red;
+                NextToArriveLabel.Text = $"<b>Scheduled Arrival: {NextExpectedTime}</b><br />" +
+                                         $"{NextBusLateness}m late - Bus #{NextBus.BusId}";
+            }
+            else
+            {
+                NextToArriveLabel.TextColor = Color.Green;
+                NextToArriveLabel.Text = $"<b>Scheduled Arrival: {NextExpectedTime}</b><br />" +
+                                         $"On Time - Bus #{NextBus.BusId}";
+            }
+            
 
             IsBusy = false;
         }

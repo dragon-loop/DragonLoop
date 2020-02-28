@@ -9,6 +9,7 @@
     <Import_RootNamespace>DragonLoopViewModels</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Services\BusService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\RequestProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\RouteService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\StopService.cs" />
