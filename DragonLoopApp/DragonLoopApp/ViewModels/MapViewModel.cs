@@ -105,6 +105,7 @@ namespace DragonLoopApp.ViewModels
                     Type = PinType.Place
                 };
                 Map.Pins.Add(pin);
+                Map.CustomPins.Add(pin);
             }
 
             foreach (var bus in Buses)
@@ -116,6 +117,7 @@ namespace DragonLoopApp.ViewModels
                     Type = PinType.Generic
                 };
                 Map.Pins.Add(pin);
+                Map.CustomPins.Add(pin);
             }
 
             foreach (var routeSegment in RouteSegments)
