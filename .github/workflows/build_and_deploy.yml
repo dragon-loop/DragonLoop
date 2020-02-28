@@ -6,6 +6,10 @@ on:
 
 jobs:
   deploy:
+    env:
+      HOST: ${{ secrets.DOCKER_SWARM_IP }}
+      USERNAME: ${{ secrets.DOCKER_SWARM_USERNAME }}
+      SSH_KEY: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
     runs-on: ubuntu-latest
 
     steps:
@@ -51,10 +55,7 @@ jobs:
     - name: copy file via ssh password
       uses: appleboy/scp-action@master
       with:
-        host: ${{ secrets.DOCKER_SWARM_IP }}
-        username: ${{ secrets.DOCKER_SWARM_USERNAME }}
-        key: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
-        source: "stack.yml"
+        source: "stack.yml,docker-compose.yml"
         target: "/tmp/"
         overwrite: true
 
@@ -64,11 +65,9 @@ jobs:
         POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD}} 
         TAG: ${{ steps.tag.outputs.tag }}
       with:
-        host: ${{ secrets.DOCKER_SWARM_IP }}
-        username: ${{ secrets.DOCKER_SWARM_USERNAME }}
-        key: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
         envs: POSTGRES_PASSWORD, TAG
         script : |
           export POSTGRES_PASSWORD=$POSTGRES_PASSWORD
           export TAG=$TAG
-          docker stack deploy -c /tmp/stack.yml --with-registry-auth --prune dragonloop
+          cd /tmp
+          docker stack deploy -c docker-compose.yml-c stack.yml --with-registry-auth --prune dragonloop
