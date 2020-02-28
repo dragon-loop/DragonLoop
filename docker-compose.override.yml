@@ -3,14 +3,19 @@ version: "3.7"
 services:
   dragonloopapi:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      ASPNETCORE_ENVIRONMENT: Development
+      PG_CONNECTION_STRING: "User ID=postgres;Host=db;Port=5432;Database=postgres;"
     volumes:
       - "./DragonLoopApi:/src/DragonLoopApi"
+    build:
+      target: ${DOCKER_TARGET}
+      context: .
+      dockerfile: DragonLoopAPI/Dockerfile
 
   dragonloopweb:
     volumes:
       - "./DragonLoopWeb:/src/DragonLoopWeb"
-
-  db:
-    ports:
-      - "5432:5432"
+    build:
+      target: ${DOCKER_TARGET}
+      context: .
+      dockerfile: DragonLoopWeb/Dockerfile
