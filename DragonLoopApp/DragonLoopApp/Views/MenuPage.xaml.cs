@@ -22,7 +22,8 @@ namespace DragonLoopApp.Views
             {
                 new HomeMenuItem {Id = MenuItemType.Map, Title="Map" },
                 new HomeMenuItem {Id = MenuItemType.Schedules, Title="Schedules" },
-                new HomeMenuItem {Id = MenuItemType.NextToArrive, Title="Next To Arrive" }
+                new HomeMenuItem {Id = MenuItemType.NextToArrive, Title="Next To Arrive" },
+                new HomeMenuItem {Id = MenuItemType.Notifications, Title="Notifications" }
             };
 
             ListViewMenu.ItemsSource = menuItems;

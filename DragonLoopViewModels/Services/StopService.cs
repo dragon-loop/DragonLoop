@@ -14,27 +14,27 @@ namespace DragonLoopViewModels.Services
 
         public async Task<Bus> GetNextBusAsync(int id)
         {
-            UriBuilder builder = new UriBuilder(UrlBase);
+            var builder = new UriBuilder(UrlBase);
             builder.Path = $"{UrlPath}/{id}/nextbus";
-            string uri = builder.ToString();
+            var uri = builder.ToString();
 
             return await RequestProvider.GetAsync<Bus>(uri);
         }
 
         public async Task<TimeSpan> GetNextExpectedTimeAsync(int id, TimeSpan time)
         {
-            UriBuilder builder = new UriBuilder(UrlBase);
+            var builder = new UriBuilder(UrlBase);
             builder.Path = $"{UrlPath}/{id}/nextexpectedtime/{time}";
-            string uri = builder.ToString();
+            var uri = builder.ToString();
 
             return await RequestProvider.GetAsync<TimeSpan>(uri);
         }
 
         public async Task<TimeSpan> GetExpectedTimeAsync(int stopId, int tripId)
         {
-            UriBuilder builder = new UriBuilder(UrlBase);
+            var builder = new UriBuilder(UrlBase);
             builder.Path = $"{UrlPath}/{stopId}/expectedtime/{tripId}";
-            string uri = builder.ToString();
+            var uri = builder.ToString();
 
             return await RequestProvider.GetAsync<TimeSpan>(uri);
         }

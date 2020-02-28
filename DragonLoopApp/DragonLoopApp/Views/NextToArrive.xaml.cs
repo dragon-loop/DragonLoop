@@ -9,7 +9,7 @@ namespace DragonLoopApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NextToArrive : ContentPage
     {
-        NextToArriveViewModel viewModel;
+        readonly NextToArriveViewModel viewModel;
 
         public NextToArrive()
         {

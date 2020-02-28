@@ -9,7 +9,7 @@ namespace DragonLoopApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SchedulesPage : ContentPage
     {
-        SchedulesViewModel viewModel;
+        readonly SchedulesViewModel viewModel;
 
         public SchedulesPage()
         {

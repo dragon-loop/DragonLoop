@@ -8,7 +8,7 @@ namespace DragonLoopViewModels.ViewModels
 {
     public class MapViewModel
     {
-        private RouteService RouteService;
+        private readonly RouteService RouteService;
 
         public IEnumerable<Route> Routes { get; set; }
 

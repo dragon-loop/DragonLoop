@@ -10,11 +10,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Services\BusService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\NotificationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\RequestProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\RouteService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\StopService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MapViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\NextToArriveViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\NotificationsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ScheduleViewModel.cs" />
   </ItemGroup>
 </Project>

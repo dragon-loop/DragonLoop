@@ -14,9 +14,9 @@ namespace DragonLoopViewModels.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private RouteService RouteService;
+        private readonly RouteService RouteService;
 
-        private StopService StopService;
+        private readonly StopService StopService;
 
         public IEnumerable<Route> Routes { get; set; }
 

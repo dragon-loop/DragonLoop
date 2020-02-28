@@ -15,9 +15,9 @@ namespace DragonLoopViewModels.Services
 
         public async Task<IEnumerable<Bus>> GetBusesAsync()
         {
-            UriBuilder builder = new UriBuilder(UrlBase);
+            var builder = new UriBuilder(UrlBase);
             builder.Path = UrlPath;
-            string uri = builder.ToString();
+            var uri = builder.ToString();
 
             return await RequestProvider.GetAsync<IEnumerable<Bus>>(uri);
         }

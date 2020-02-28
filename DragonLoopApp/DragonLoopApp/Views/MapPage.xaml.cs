@@ -13,7 +13,7 @@ namespace DragonLoopApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MapPage : ContentPage
     {
-        MapViewModel viewModel;
+        readonly MapViewModel viewModel;
 
         public MapPage()
         {

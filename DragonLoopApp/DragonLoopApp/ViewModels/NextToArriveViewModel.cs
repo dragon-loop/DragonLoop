@@ -1,14 +1,12 @@
 ﻿using DragonLoopModels;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace DragonLoopApp.ViewModels
 {
-    public class NextToArriveViewModel : DragonLoopViewModels.ViewModels.NextToArriveViewModel, INotifyPropertyChanged
+    public class NextToArriveViewModel : DragonLoopViewModels.ViewModels.NextToArriveViewModel
     {
         public string Title { get; set; }
 
@@ -95,7 +93,5 @@ namespace DragonLoopApp.ViewModels
 
             IsBusy = false;
         }
-
-        
     }
 }

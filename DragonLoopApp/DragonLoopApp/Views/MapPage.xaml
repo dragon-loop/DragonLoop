@@ -17,7 +17,7 @@
                 ItemsSource="{Binding RoutesCollection}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
-                IsPullToRefreshEnabled="false"
+                IsPullToRefreshEnabled="False"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement">
                 <ListView.ItemTemplate>
