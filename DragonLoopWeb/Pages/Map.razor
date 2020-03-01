@@ -47,7 +47,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        mapViewModel = new MapViewModel("api." + MyNavigationManager.BaseUri + "/api");
+        mapViewModel = new MapViewModel("localhost");
         await mapViewModel.LoadRoutes();
     }
 

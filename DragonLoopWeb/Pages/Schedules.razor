@@ -1,11 +1,10 @@
 ﻿@page "/schedules"
 @using DragonLoopViewModels.ViewModels
+@using DragonLoopModels
 @using Microsoft.AspNetCore.Components;
 @inject NavigationManager MyNavigationManager
 
 <h1>Schedules</h1>
-
-<p>Dragon Route</p>
 
 @if (scheduleViewModel.Schedules == null)
 {
@@ -13,6 +12,12 @@
 }
 else
 {
+    <select @onchange="eventArgs => { SelectRoute(scheduleViewModel.Routes.Last(), eventArgs.Value); }">
+        @foreach (var route in scheduleViewModel.Routes)
+        {
+            <option value=@route>@route.Name</option>
+        }
+    </select>
     <table class="table">
         <thead>
             <tr>
@@ -41,8 +46,15 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        scheduleViewModel = new ScheduleViewModel("api." + MyNavigationManager.BaseUri + "/api");
+        scheduleViewModel = new ScheduleViewModel("localhost");
         await scheduleViewModel.LoadRoutes();
         await scheduleViewModel.SetSelectedRoute(scheduleViewModel.Routes.First());
+    }
+
+    private void SelectRoute(object Route, object e)
+    {
+        var route = Route as Route;
+        Console.WriteLine(route.Name);
+        scheduleViewModel.SetSelectedRoute(route);
     }
 }
