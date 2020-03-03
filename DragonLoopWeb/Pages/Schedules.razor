@@ -5,14 +5,18 @@
 
 <h1>Schedules</h1>
 
-<p>Dragon Route</p>
-
 @if (scheduleViewModel.Schedules == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
+    <select @onchange="SelectRoute">
+        @foreach (var route in scheduleViewModel.Routes)
+        {
+            <option value=@route.RouteId>@route.Name</option>
+        }
+    </select>
     <table class="table">
         <thead>
             <tr>
@@ -44,5 +48,11 @@ else
         scheduleViewModel = new ScheduleViewModel(MyNavigationManager.BaseUri + "/api");
         await scheduleViewModel.LoadRoutes();
         await scheduleViewModel.SetSelectedRoute(scheduleViewModel.Routes.First());
+    }
+
+    private async Task SelectRoute(ChangeEventArgs e)
+    {
+        var route = scheduleViewModel.Routes.Single(r => r.RouteId == int.Parse(e.Value.ToString()));
+        await scheduleViewModel.SetSelectedRoute(route);
     }
 }
