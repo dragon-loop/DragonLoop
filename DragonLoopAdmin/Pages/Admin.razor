@@ -2,10 +2,79 @@
 @inject IJSRuntime JSRuntime;
 @using Microsoft.AspNetCore.Components;
 @using DragonLoopViewModels.ViewModels
+@using DragonLoopViewModels.Services;
 @using DragonLoopModels
+@inject NavigationManager MyNavigationManager
 
 <h1>Administrative View</h1>
 
-@code {
+@if (adminViewModel.Buses == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h3>Buses</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>BusId</th>
+                <th>Route</th>
+                <th>Enable?</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var bus in adminViewModel.Buses)
+            {
+                <tr>
+                    <td>@bus.BusId</td>
+                    <td>@bus.RouteId</td>
+                    <td>
+                        <label class="switch">
+                            <input type="checkbox" @onchange="eventArgs => { ToggleBus(bus, eventArgs.Value); }" />
+                            <span class="slider round"></span>
+                        </label>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
+
+@code {
+    private AdminViewModel adminViewModel;
+    protected override async Task OnInitializedAsync()
+    {
+        adminViewModel = new AdminViewModel("localhost");
+        await adminViewModel.LoadBuses();
+    }
+    protected async void ToggleBus(object Bus, object toggle)
+    {
+        var bus = Bus as Bus;
+
+        if ((bool)toggle)
+        {
+            //activate bus
+        }
+        else
+        {
+            //deactivate bus
+        }
+
+    }
+
+    protected string IsBusActive(object Bus)
+    {
+        var bus = Bus as Bus;
+
+        if (bus.InactiveFlag == false)
+        {
+            return "true";
+        }
+        else
+        {
+            return "false";
+        }
+    }
 }

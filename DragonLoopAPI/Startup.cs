@@ -50,7 +50,7 @@ namespace DragonLoopAPI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(policy => policy.WithOrigins("http://localhost:55495")); //Use CORS during development
+            app.UseCors(policy => policy.WithOrigins("https://localhost:44399")); //Use CORS during development
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

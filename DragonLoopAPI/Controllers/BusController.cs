@@ -23,7 +23,6 @@ namespace DragonLoopAPI.Controllers
             _busManager = new BusManager(context);
         }
 
-        // GET: api/Bus
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Bus>>> GetBuses()
         {
