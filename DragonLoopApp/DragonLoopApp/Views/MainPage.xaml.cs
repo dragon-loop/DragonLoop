@@ -39,6 +39,9 @@ namespace DragonLoopApp.Views
                     case (int)MenuItemType.Schedules:
                         MenuPages.Add(id, new NavigationPage(new SchedulesPage()));
                         break;
+                    case (int)MenuItemType.Notifications:
+                        MenuPages.Add(id, new NavigationPage(new NotificationsPage()));
+                        break;
                 }
             }
 

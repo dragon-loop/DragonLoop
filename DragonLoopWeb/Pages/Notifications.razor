@@ -1,0 +1,43 @@
+﻿@page "/notifications"
+@using DragonLoopViewModels.ViewModels
+@using Microsoft.AspNetCore.Components;
+@inject NavigationManager MyNavigationManager
+
+<h1>Notifications</h1>
+
+@if (notificationViewModel.Notifications == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>NotificationId</th>
+                <th>Message</th>
+                <th>NotificationDateTime</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var notification in notificationViewModel.Notifications.OrderByDescending(n => n.NotificationDateTime))
+            {
+                <tr>
+                    <td>@notification.NotificationId</td>
+                    <td>@notification.Message</td>
+                    <td>@notification.NotificationDateTime</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private NotificationsViewModel notificationViewModel;
+
+    protected override async Task OnInitializedAsync()
+    {
+        notificationViewModel = new NotificationsViewModel(MyNavigationManager.BaseUri + "/api");
+        await notificationViewModel.LoadNotifications();
+    }
+}

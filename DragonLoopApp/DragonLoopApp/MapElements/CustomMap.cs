@@ -7,6 +7,7 @@ namespace DragonLoopApp.Views.MapElements
     {
         public CustomMap(MapSpan region) : base(region)
         {
+            CustomPins = new List<CustomPin>();
         }
         public List<CustomPin> CustomPins { get; set; }
     }

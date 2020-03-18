@@ -8,7 +8,7 @@ namespace DragonLoopViewModels.ViewModels
 {
     public class ScheduleViewModel
     {
-        private RouteService RouteService;
+        private readonly RouteService RouteService;
 
         public IEnumerable<IGrouping<int, Schedule>> Schedules { get; set; }
 

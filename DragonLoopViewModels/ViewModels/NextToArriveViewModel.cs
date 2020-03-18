@@ -1,22 +1,16 @@
-﻿
-using DragonLoopModels;
+﻿using DragonLoopModels;
 using DragonLoopViewModels.Services;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace DragonLoopViewModels.ViewModels
 {
     public class NextToArriveViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        private readonly RouteService RouteService;
 
-        private RouteService RouteService;
-
-        private StopService StopService;
+        private readonly StopService StopService;
 
         public IEnumerable<Route> Routes { get; set; }
 

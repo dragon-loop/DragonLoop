@@ -12,6 +12,7 @@ namespace DragonLoopAPI
         public virtual DbSet<Stop> Stops { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
         public virtual DbSet<RouteSegment> RouteSegments { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -191,6 +192,26 @@ namespace DragonLoopAPI
                     .HasForeignKey(d => d.RouteId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("route_id_fkey");
+            });
+
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.HasKey(e => e.NotificationId)
+                    .HasName("notifications_pkey");
+
+                entity.ToTable("notifications");
+
+                entity.Property(e => e.NotificationId)
+                    .HasColumnName("notification_id")
+                    .HasDefaultValueSql("nextval('notifications_notification_id_seq'::regclass)");
+
+                entity.Property(e => e.Message)
+                    .IsRequired()
+                    .HasColumnName("message");
+
+                entity.Property(e => e.NotificationDateTime)
+                    .IsRequired()
+                    .HasColumnName("notification_datetime");
             });
         }
     }

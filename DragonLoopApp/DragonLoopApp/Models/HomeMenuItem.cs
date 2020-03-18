@@ -8,7 +8,8 @@ namespace DragonLoopApp.Models
     {
         Map,
         Schedules,
-        NextToArrive
+        NextToArrive,
+        Notifications
     }
     public class HomeMenuItem
     {

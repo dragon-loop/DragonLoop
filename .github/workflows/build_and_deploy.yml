@@ -6,69 +6,69 @@ on:
 
 jobs:
   deploy:
+    env:
+      HOST: ${{ secrets.DOCKER_SWARM_IP }}
+      USERNAME: ${{ secrets.DOCKER_SWARM_USERNAME }}
+      SSH_KEY: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
     runs-on: ubuntu-latest
 
     steps:
-    - name: 'Checkout repo' 
-      uses: actions/checkout@master
+      - name: Checkout repo
+        uses: actions/checkout@master
 
-    - name: 'Docker login'
-      uses: azure/docker-login@v1
-      with:
-        login-server: docker.pkg.github.com/dragon-loop/dragonloop/
-        username: ${{ secrets.GITHUB_DOCKER_USERNAME }}
-        password: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
-  
-    - name: Get Tag
-      id: tag
-      run: |
-        echo $GITHUB_REF
-        echo ${GITHUB_REF/refs\/tags\//}
-        echo ::set-output name=tag::${GITHUB_REF/refs\/tags\//}
+      - name: Docker login
+        uses: azure/docker-login@v1
+        with:
+          login-server: docker.pkg.github.com/dragon-loop/dragonloop/
+          username: ${{ secrets.GITHUB_DOCKER_USERNAME }}
+          password: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
 
-    - name: 'Build and push docker images'
-      env:
-        COMPOSE_DOCKER_CLI_BUILD: 1
-        DOCKER_BUILDKIT: 1
-      run: |
-        export DOCKER_TARGET=publish
-        export TAG=build
-        docker-compose pull
-        docker-compose build
-        docker-compose push
+      - name: Get Tag
+        id: tag
+        run: |
+          echo $GITHUB_REF
+          echo ${GITHUB_REF/refs\/tags\//}
+          echo ::set-output name=tag::${GITHUB_REF/refs\/tags\//}
 
-        export DOCKER_TARGET=final
+      - name: Build and push docker images
+        env:
+          COMPOSE_DOCKER_CLI_BUILD: 1
+          DOCKER_BUILDKIT: 1
+        run: |
+          export DOCKER_TARGET=final
 
-        export TAG=latest
-        docker-compose pull
-        docker-compose build
-        docker-compose push
+          export TAG=latest
+          docker-compose build
+          docker-compose push
 
-        export TAG=${{ steps.tag.outputs.tag }}
-        docker-compose build
-        docker-compose push
+          export TAG=${{ steps.tag.outputs.tag }}
+          docker-compose build
+          docker-compose push
 
-    - name: copy file via ssh password
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.DOCKER_SWARM_IP }}
-        username: ${{ secrets.DOCKER_SWARM_USERNAME }}
-        key: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
-        source: "stack.yml"
-        target: "/tmp/"
-        overwrite: true
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@master
+        with:
+          source: stack.yml,docker-compose.yml
+          target: /tmp/
+          overwrite: true
 
-    - name: 'Deploy to swarm'
-      uses: appleboy/ssh-action@master
-      env:
-        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD}} 
-        TAG: ${{ steps.tag.outputs.tag }}
-      with:
-        host: ${{ secrets.DOCKER_SWARM_IP }}
-        username: ${{ secrets.DOCKER_SWARM_USERNAME }}
-        key: ${{ secrets.DOCKER_SWARM_PRIVATE_KEY }}
-        envs: POSTGRES_PASSWORD, TAG
-        script : |
-          export POSTGRES_PASSWORD=$POSTGRES_PASSWORD
-          export TAG=$TAG
-          docker stack deploy -c /tmp/stack.yml --with-registry-auth --prune dragonloop
+      - name: Deploy to swarm
+        uses: appleboy/ssh-action@master
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD}}
+          TAG: ${{ steps.tag.outputs.tag }}
+        with:
+          envs: POSTGRES_PASSWORD, TAG
+          script: |
+            export POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+            export TAG=$TAG
+            cd /tmp
+            docker stack deploy -c docker-compose.yml -c stack.yml --with-registry-auth --prune dragonloop
+
+      - name: Send notification
+        uses: appleboy/telegram-action@master
+        with:
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          to: ${{ secrets.TELEGRAM_TO }}
+          message: Finished deploying ${{ steps.tag.outputs.tag }}
+          sticker: CAACAgIAAxkBAAMPXliJgx9mdd-hovhFHiXy4sHIk1YAAhoAA8BjdyRVCiBKTPCNtRgE
